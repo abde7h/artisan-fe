@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import PostsList from "./components/PostsList"
 
-export default function HomePage () {
-  /*interface User {
+export default function HomePage() {
+  interface User {
     username: string;
     email: string;
   }
@@ -17,6 +18,8 @@ export default function HomePage () {
     localStorage.getItem('user') ?? ''
   )
 
+  const [isValidUser, setIsValidUser] = useState(false);
+
   // Convertir el objeto User a una cadena JSON
   const personString: string = JSON.stringify(person)
   //setUser(personString)
@@ -25,9 +28,23 @@ export default function HomePage () {
     window.localStorage.setItem('user', personString ?? '')
   }, [user])
 
-  const personUser: User = JSON.parse(personString)*/
+  useEffect(() => {
+    const userLS = localStorage.getItem("presupuesto") ?? ""
+
+    if (userLS != "") {
+      setIsValidUser(true)
+    }
+  }, [])
+
+  const personUser: User = JSON.parse(personString)
 
   return (
-    <h1>Pagina de Inicio</h1>
+    <>
+      {isValidUser ? (
+        <PostsList />
+      ) : (
+        <p>No eres un usuario válido.</p>
+      )}
+    </>
   )
 }
