@@ -14,8 +14,8 @@ export default function HomePage() {
     email: 'diego@example.com'
   }
 
-  const [user, setUser] = useState<string>(
-    localStorage.getItem('user') ?? ''
+  /*const [user, setUser] = useState<string>(
+    localStorage.getItem('user') ?? ""
   )
 
   const [isValidUser, setIsValidUser] = useState(false);
@@ -36,15 +36,18 @@ export default function HomePage() {
     }
   }, [])
 
-  const personUser: User = JSON.parse(personString)
+  const personUser: User = JSON.parse(personString)*/
 
   return (
     <>
-      {isValidUser ? (
+      {/*isValidUser ? (
         <PostsList />
       ) : (
-        <p>No eres un usuario válido.</p>
-      )}
+        <>
+          <p>No eres un usuario válido.</p>
+        </>
+      )*/}
+      <PostsList />
     </>
   )
 }
