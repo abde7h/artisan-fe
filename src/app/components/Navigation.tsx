@@ -1,5 +1,8 @@
+"use client"
+
 import Link from 'next/link'
 import styles from './Navigation.module.css'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const links = [
   {
@@ -21,6 +24,9 @@ const links = [
 ]
 
 export function Navigation() {
+  const { data: session } = useSession()
+
+  console.log(session)
   return (
     <header className={styles.header}>
       <nav>
@@ -31,6 +37,8 @@ export function Navigation() {
             </li>
           ))}
         </ul>
+        {session ? <button onClick={() => signOut()}>Sign out</button> 
+        : <button onClick={() => signIn()}>Sign in</button>}
       </nav>
     </header>
   )
