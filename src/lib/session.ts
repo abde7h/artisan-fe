@@ -5,7 +5,8 @@ import GoogleProvider from "next-auth/providers/google";
 //import jsonwebtoken from 'jsonwebtoken'
 import { JWT } from "next-auth/jwt";
 
-import { createUser, getUser } from "./actions";
+import { /*createUser,*/ createUser, getUser } from "./actions";
+import { SessionInterface, UserProfile } from "@/common.types";
 //import { SessionInterface, UserProfile } from "@/common.types";
 
 export const authOptions: NextAuthOptions = {
@@ -15,7 +16,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  jwt: {
+  /* jwt: {
     encode: ({ secret, token }) => {
       const encodedToken = jsonwebtoken.sign(
         {
@@ -32,13 +33,13 @@ export const authOptions: NextAuthOptions = {
       const decodedToken = jsonwebtoken.verify(token!, secret);
       return decodedToken as JWT;
     },
-  },
+  }, */
   theme: {
     colorScheme: "light",
     logo: "/logo.svg",
   },
   callbacks: {
-    async session({ session }) {
+    /*async session({ session }) {
       const email = session?.user?.email as string;
 
       try { 
@@ -57,13 +58,13 @@ export const authOptions: NextAuthOptions = {
         console.error("Error retrieving user data: ", error.message);
         return session;
       }
-    },
-    async signIn({ user }: {
-      user: AdapterUser | User
-    }) {
+    },*/
+    /*async signIn({ user }: { user: /*AdapterUser | User }) {
       try {
-        const userExists = await getUser(user?.email as string) as { user?: UserProfile }
-        
+        const userExists = (await getUser(user?.email as string)) as unknown as {
+          user?: UserProfile;
+        };
+
         if (!userExists.user) {
           await createUser(user.name as string, user.email as string, user.image as string)
         }
@@ -73,12 +74,12 @@ export const authOptions: NextAuthOptions = {
         console.log("Error checking if user exists: ", error.message);
         return false;
       }
-    },
+    },*/
   },
 };
 
 export async function getCurrentUser() {
-  const session = await getServerSession(authOptions) as SessionInterface;
+  const session = (await getServerSession(authOptions)) as SessionInterface;
 
   return session;
 }

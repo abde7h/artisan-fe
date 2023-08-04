@@ -8,7 +8,7 @@ export interface UserProfile {
     avatarUrl: string;
     //githubUrl: string | null;
     //linkedinUrl: string | null;
-    projects: {
+    /*projects: {
       edges: { node: ProjectInterface }[];
       pageInfo: {
         hasPreviousPage: boolean;
@@ -16,6 +16,15 @@ export interface UserProfile {
         startCursor: string;
         endCursor: string;
       };
+    };*/
+}
+
+export interface SessionInterface extends Session {
+    user: User & {
+      id: string;
+      name: string;
+      email: string;
+      avatarUrl: string;
     };
 }
 

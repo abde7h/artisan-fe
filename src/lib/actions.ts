@@ -1,7 +1,7 @@
-import { GraphQLClient } from "graphql-request";
+//import { GraphQLClient } from "graphql-request";
 
-import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
-import { ProjectForm } from "@/common.types";
+//import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
+//import { ProjectForm } from "@/common.types";
 
 export const getUser = (email: string) => {
   fetch(`https:localhost:8080/1.0.0/user/email/${email}`)
@@ -14,19 +14,27 @@ export const getUser = (email: string) => {
       })
 };
 
-export const createUser = (name: string, email: string, avatarUrl: string) => {
-  client.setHeader("x-api-key", apiKey);
-
-  const variables = {
-    input: {
-      name: name,
-      email: email,
-      avatarUrl: avatarUrl
-    },
-  };
-  
-  return makeGraphQLRequest(createUserMutation, variables);
+export const createUser = async (name: string, email: string, avatarUrl: string) => {
+  try {
+    const response = await fetch(`https:localhost:8080/1.0.0/user/add`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "name": name,
+        "email": email,
+        "image": avatarUrl
+      }),
+    });
+    return response.json();
+  } catch (err) {
+    throw err;
+  }
 };
+
+
+
 
 /* const isProduction = process.env.NODE_ENV === 'production';
 const apiUrl = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || '' : 'http://127.0.0.1:4000/graphql';
