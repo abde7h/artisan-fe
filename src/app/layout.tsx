@@ -1,6 +1,7 @@
 import './styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Provider from './Provider'
 import { Navigation } from './components/Navigation'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   description: '¿Y tu que haces con tu serrin?'
 }
 
-export default function RootLayout ({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode
@@ -18,8 +19,10 @@ export default function RootLayout ({
   return (
     <html lang='es-ES'>
       <body className={inter.className}>
-        <Navigation />
-        {children}
+        <Provider>
+          <Navigation />
+          {children}
+        </Provider>
       </body>
     </html>
   )
