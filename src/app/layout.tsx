@@ -1,23 +1,24 @@
-import Navbar from './components/Navbar'
-import './styles/globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-
+import Navbar from "./components/Navbar";
+import "./styles/globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: 'Artisan',
-  description: 'Productos de artesanía hecho por artesanos verificados.',
-}
+  title: "Artisan",
+  description: "Productos de artesanía hecho por artesanos verificados.",
+};
 
-export default function RootLayout ({
-  children
+export default function RootLayout({
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="es-ES">
-      <Navbar />
-      <main>{children}</main>
+      <body>
+        <Navbar />
+        <main>{children}</main>
+      </body>
     </html>
-  )
+  );
 }

@@ -1,69 +1,52 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react';
-import Buscador from './Buscador'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import React from "react";
+import Buscador from "./Buscador";
+import {
+  BsChatText,
+  BsChatTextFill,
+  BsCloudArrowUp,
+  BsIncognito,
+} from "react-icons/bs";
+import UserMenuDropdown from "./UserMenuDropdown";
 
+interface Artisan {
+  user_id: number;
+  username: string;
+  email: string;
+  password: string;
+  name: string;
+  surnames: string;
+  telephone: string;
+  description: string;
+  image: string;
+}
 
 export default function Navbar() {
-  const [profiles, setProfiles] = useState([]);
+  const [artisan, setArtisan] = useState("");
 
-  useEffect(() => {
-    const getProfiles = async () => {
-      const response = await fetch('/api/artisan');
-      const profiles = await response.json();
-      setProfiles(profiles.data.username);
-    }
-
-    getProfiles();
-  }, []);
-
-
+  const handleSearch = () => {};
   return (
-    <nav>
-      <div>
-        <Link href=''>
-          <Image
-            src='/'
-            width={100}
-            height={100}
-            alt='Logo Artisan'
-          />
-        </Link>
-        <Buscador  getSearchResults={(profiles) => setProfiles(profiles)}/>
-        <Link href=''>
-          <Image
-            src='/'
-            width={100}
-            height={100}
-            alt='Subir producto'
-          />
-        </Link>
-        <Link href=''>
-          <Image
-            src='/'
-            width={100}
-            height={100}
-            alt='Notificaciones'
-          />
-        </Link><Link href=''>
-          <Image
-            src='/chat'
-            width={100}
-            height={100}
-            alt='Chats'
-          />
-        </Link><Link href=''>
-          <Image
-            src='/'
-            width={100}
-            height={100}
-            alt='Perfil'
-          />
-        </Link>
-        </div>
+    <nav className="max-w-[1440px] mx-auto flex justify-between items-center sm:px-16 px-6 py-4">
+      <Link href="http://localhost:3000">
+        <BsIncognito className="w-20 h-8" />
+        {/*<Image src="/" width={100} height={100} alt="Logo Artisan" />*/}
+      </Link>
+      <form className="w-[28rem]" onSubmit={handleSearch}>
+        <Buscador
+          artisan={artisan}
+          setArtisan={setArtisan}
+        />
+      </form>
+      <Link href="/">
+        <BsCloudArrowUp className="w-8 h-8" />
+      </Link>
+      {/*
+        TO DO
+        <Notificaciones />*/}
+      <UserMenuDropdown />
     </nav>
   );
-};
+}
