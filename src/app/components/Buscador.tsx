@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 
-interface Artisan {
-  user_id: number;
+interface ArtisanDTO {
   username: string;
-  email: string;
-  password: string;
   name: string;
   surnames: string;
-  telephone: string;
-  description: string;
   image: string;
 }
 
@@ -20,66 +15,40 @@ interface BuscadorPerfilesProps {
   setArtisan: (artisan: string) => void;
 }
 
-const artisanLists = [
-  {
-    user_id: 1,
-    username: "carlos",
-    email: "user1@example.com",
-    password: "pass1",
-    name: "Carlos",
-    surnames: "Lozano",
-    telephone: "123456789",
-    description: "Description 1",
-    image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
-  },
-  {
-    user_id: 2,
-    username: "cristian",
-    email: "user2@example.com",
-    password: "pass2",
-    name: "Cristian",
-    surnames: "Militar",
-    telephone: "987654321",
-    description: "Description 2",
-    image: "https://www.realmadrid.com/img/vertical_380px/cristiano_550x650_20180917025046.jpg",
-  },
-  {
-    user_id: 3,
-    username: "diego",
-    email: "user2@example.com",
-    password: "pass2",
-    name: "Diego",
-    surnames: "Algo",
-    telephone: "987654321",
-    description: "Description 2",
-    image: "https://www.realmadrid.com/img/vertical_380px/cristiano_550x650_20180917025046.jpg",
-  },
-  {
-    user_id: 4,
-    username: "Abde",
-    email: "user2@example.com",
-    password: "pass2",
-    name: "Abde",
-    surnames: "Nose",
-    telephone: "987654321",
-    description: "Description 2",
-    image: "https://www.realmadrid.com/img/vertical_380px/cristiano_550x650_20180917025046.jpg",
-  },
-];
-
 const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
   const [query, setQuery] = useState("");
+  const [artisans, setArtisans] = useState<ArtisanDTO[]>([]);
   const isInputEmpty = query.trim() === "";
 
-  const filteredArtisans = artisanLists.filter((item) => {
+  useEffect(() => {
+    const apiUrl = "http://localhost:8080/1.0.0/artisanDTO";
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Datos recibidos:", data);
+        setArtisans(data);
+      })
+      .catch((error) => console.error("Error fetching data: ", error));
+  }, []);
+
+  const filteredArtisans = artisans.filter((item) => {
     const searchTerm = query.toLowerCase().replace(/\s+/g, "");
-    const usernameMatch = item.username.toLowerCase().replace(/\s+/g, "").includes(searchTerm);
-    const nameMatch = item.name.toLowerCase().replace(/\s+/g, "").includes(searchTerm);
-    const surnamesMatch = item.surnames.toLowerCase().replace(/\s+/g, "").includes(searchTerm);
-    
+    const usernameMatch = item.username
+      .toLowerCase()
+      .replace(/\s+/g, "")
+      .includes(searchTerm);
+    const nameMatch = item.name
+      .toLowerCase()
+      .replace(/\s+/g, "")
+      .includes(searchTerm);
+    const surnamesMatch = item.surnames
+      .toLowerCase()
+      .replace(/\s+/g, "")
+      .includes(searchTerm);
+
     return usernameMatch || nameMatch || surnamesMatch;
   });
-  
 
   return (
     <div>
@@ -87,16 +56,16 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
         <div className={isInputEmpty ? "relative w-full" : "w-full"}>
           <Combobox.Input
             displayValue={(item: string) => item}
-            onChange={(event) => setQuery(event.target.value)} // Update the search query when the input changes
+            onChange={(event) => setQuery(event.target.value)}
             placeholder="Busca un artesano..."
             className="rounded-full bg-gray-200 h-12 w-full"
           />
           <Transition
-            as={Fragment} // group multiple elements without introducing an additional DOM node i.e., <></>
+            as={Fragment}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            afterLeave={() => setQuery("")} // Reset the search query after the transition completes
+            afterLeave={() => setQuery("")}
           >
             <Combobox.Options
               className="absolute mt-1 max-h-80 w-[27.5rem] overflow-auto rounded-md bg-white py-1 text-base shadow-lg focus:outline-none sm:text-sm"
@@ -104,11 +73,11 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
             >
               {filteredArtisans.map((artisan) => (
                 <Combobox.Option
-                  key={artisan.user_id}
+                  key={artisan.username}
                   className={({ active }) =>
                     `${active ? "bg-gray-100 text-gray-800 " : "text-gray-900"}`
                   }
-                  value={artisan.username} // Aquí estamos usando el username como valor. Puedes ajustarlo si es necesario.
+                  value={artisan.username}
                 >
                   {({ selected, active }) => (
                     <>

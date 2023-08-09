@@ -18,18 +18,16 @@ const UserMenuDropdown = () => {
     <div style={{ display: isMenuOpen ? "relative" : "inline-block" }}>
       <button
         onClick={toggleMenu}
-        className="focus:outline-none flex items-center"
+        className="focus:outline-none flex items-center relative"
       >
-        <button onClick={toggleMenu} className="focus:outline-none relative">
-          <Image
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN7__X2x4sgwdH_mU6RZcEIMyu9i2ykytSWLxslCLSCw&s"
-            width={60}
-            height={60}
-            alt="Perfil"
-            className="rounded-full border border-gray-600"
-          />
-          <MdArrowDropDownCircle className="w-5 h-5 absolute bottom-0 right-0" />
-        </button>
+        <Image
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN7__X2x4sgwdH_mU6RZcEIMyu9i2ykytSWLxslCLSCw&s"
+          width={60}
+          height={60}
+          alt="Perfil"
+          className="rounded-full border border-gray-600"
+        />
+        <MdArrowDropDownCircle className="w-5 h-5 absolute bottom-0 right-0" />
       </button>
 
       {isMenuOpen && (
