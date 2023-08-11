@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-   jwt: {
+   /*jwt: {
     encode: ({ secret, token }) => {
       const encodedToken = jsonwebtoken.sign(
         {
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
       const decodedToken = jsonwebtoken.verify(token!, secret);
       return decodedToken as JWT;
     },
-  },
+  },*/
   theme: {
     colorScheme: "light",
     logo: "/logo.svg",

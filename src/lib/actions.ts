@@ -44,11 +44,11 @@ export const getUser = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/1.0.0/user/email/${email}`/*, {
+      `http://localhost:8080/1.0.0/user/email/${email}`, {
         headers: {
-          //"Authorization": "JWT " + cookies().get("next-auth.session-token"),
+          "Authorization": "JWT " + cookies().get("next-auth.session-token"),
         }
-      }*/
+      }
     );
     const data = await response.json();
     return data as { user?: UserProfile };
@@ -79,7 +79,7 @@ export const createUser = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //"Authorization": "JWT " + process.env.NEXTAUTH_SECRET,
+        "Authorization": "JWT " + process.env.NEXTAUTH_SECRET,
       },
       body: JSON.stringify({
         name,
