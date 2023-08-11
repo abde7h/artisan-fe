@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import PostsList from "./components/PostsList"
+import { signOut } from 'next-auth/react';
 
 export default function HomePage() {
   interface User {
@@ -48,6 +49,7 @@ export default function HomePage() {
         </>
       )*/}
       <PostsList />
+      <button onClick={() => signOut()}>Sign out</button>
     </>
   )
 }

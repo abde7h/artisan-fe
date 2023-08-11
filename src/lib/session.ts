@@ -1,13 +1,10 @@
 import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
-//import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
-//import jsonwebtoken from 'jsonwebtoken'
+import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
-
-import { /*createUser,*/ createUser, getUser } from "./actions";
+import { createUser, getUser } from "./actions";
 import { SessionInterface, UserProfile } from "@/common.types";
-//import { SessionInterface, UserProfile } from "@/common.types";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,12 +13,12 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  /* jwt: {
+   jwt: {
     encode: ({ secret, token }) => {
       const encodedToken = jsonwebtoken.sign(
         {
           ...token,
-          iss: "grafbase",
+          iss: "artisan",
           exp: Math.floor(Date.now() / 1000) + 60 * 60,
         },
         secret
@@ -33,13 +30,13 @@ export const authOptions: NextAuthOptions = {
       const decodedToken = jsonwebtoken.verify(token!, secret);
       return decodedToken as JWT;
     },
-  }, */
+  },
   theme: {
     colorScheme: "light",
     logo: "/logo.svg",
   },
   callbacks: {
-    /*async session({ session }) {
+    async session({ session }) {
       const email = session?.user?.email as string;
 
       try { 
@@ -58,8 +55,9 @@ export const authOptions: NextAuthOptions = {
         console.error("Error retrieving user data: ", error.message);
         return session;
       }
-    },*/
-    /*async signIn({ user }: { user: /*AdapterUser | User }) {
+    },
+    async signIn({ user }: { user: User }) {
+
       try {
         const userExists = (await getUser(user?.email as string)) as unknown as {
           user?: UserProfile;
@@ -74,8 +72,15 @@ export const authOptions: NextAuthOptions = {
         console.log("Error checking if user exists: ", error.message);
         return false;
       }
-    },*/
+    },
   },
+  /*pages: {
+    signIn: '/auth/signin',
+    signOut: '/auth/signout',
+    error: '/auth/error', // Error code passed in query string as ?error=
+    verifyRequest: '/auth/verify-request', // (used for check email message)
+    newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+  },*/
 };
 
 export async function getCurrentUser() {

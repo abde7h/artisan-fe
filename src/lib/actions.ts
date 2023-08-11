@@ -1,40 +1,104 @@
 //import { GraphQLClient } from "graphql-request";
 
+import { cookies } from 'next/headers'
+import { UserProfile } from "@/common.types";
+
 //import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
 //import { ProjectForm } from "@/common.types";
 
-export const getUser = (email: string) => {
-  fetch(`https:localhost:8080/1.0.0/user/email/${email}`)
+const isProduction = process.env.NODE_ENV === "production";
+const apiUrl = isProduction
+  ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ""
+  : "http://127.0.0.1:4000/graphql";
+//const apiKey = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || '' : 'letmein';
+const serverUrl = isProduction
+  ? process.env.NEXT_PUBLIC_SERVER_URL
+  : "http://localhost:3000";
+
+/*export const getUser = (email: string) => {
+  fetch(`http://localhost:8080/1.0.0/user/email/${email}`)
       .then(async res => await res.json())
       .then(res => {
-          return res
+          return res as { user?: UserProfile }
       })
       .catch(err => {
           throw err;
       })
+
+  /*return {
+    user_id: "123456",
+    username: "ejemploUsuario",
+    email: "ejemplo@email.com",
+    password: "contrasenaSegura",
+    name: "Nombre",
+    surnames: "Apellidos",
+    telephone: "123-456-7890",
+    description: "Esta es una descripción de usuario.",
+    image: "ruta/a/la/imagen.jpg",
+  } as { user?: UserProfile };
+};*/
+
+export const getUser = async (
+  email: string
+): Promise<{ user?: UserProfile }> => {
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/1.0.0/user/email/${email}`/*, {
+        headers: {
+          //"Authorization": "JWT " + cookies().get("next-auth.session-token"),
+        }
+      }*/
+    );
+    const data = await response.json();
+    return data as { user?: UserProfile };
+  } catch (error) {
+    throw error;
+  }
+
+  // return {
+  //   user_id: "123456",
+  //   username: "ejemploUsuario",
+  //   email: "ejemplo@email.com",
+  //   password: "contrasenaSegura",
+  //   name: "Nombre",
+  //   surnames: "Apellidos",
+  //   telephone: "123-456-7890",
+  //   description: "Esta es una descripción de usuario.",
+  //   image: "ruta/a/la/imagen.jpg",
+  // } as { user?: UserProfile };
 };
 
-export const createUser = async (name: string, email: string, avatarUrl: string) => {
+export const createUser = async (
+  name: string,
+  email: string,
+  avatarUrl: string
+): Promise<any> => {
   try {
-    const response = await fetch(`https:localhost:8080/1.0.0/user/add`, {
+    const response = await fetch(`http://localhost:8080/1.0.0/user/add`, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        //"Authorization": "JWT " + process.env.NEXTAUTH_SECRET,
       },
       body: JSON.stringify({
-        "name": name,
-        "email": email,
-        "image": avatarUrl
+        name,
+        email,
+        image: avatarUrl,
       }),
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Error creating user: ${response.status} ${response.statusText}`
+      );
+    }
+
     return response.json();
-  } catch (err) {
-    throw err;
+  } catch (error) {
+    throw error;
   }
 };
-
-
-
 
 /* const isProduction = process.env.NODE_ENV === 'production';
 const apiUrl = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || '' : 'http://127.0.0.1:4000/graphql';

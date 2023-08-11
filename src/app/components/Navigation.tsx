@@ -24,7 +24,7 @@ const links = [
   }
 ]
 
-export async function Navigation() {
+const Navbar = async () => {
   //const { data: session } = useSession()
   const session = await getCurrentUser()
 
@@ -42,13 +42,13 @@ export async function Navigation() {
         {/*session ? <button onClick={() => signOut()}>Sign out</button> 
         : <button onClick={() => signIn()}>Sign in</button>*/}
 
-        <div className='flexCenter gap-4'>
+        <div /*className='flexCenter gap-4'*/>
           {session?.user ? (
             <>
-              {session?.user.image}
+              {session?.user.name}
 
               <Link href="/create-product">
-              <Button title='Crear Prducto' textColor='text-black' />
+                <Button title='Crear Producto' textColor='text-black' />
               </Link>
             </>
           ) : (
@@ -59,3 +59,5 @@ export async function Navigation() {
     </header>
   )
 }
+
+export default Navbar;
