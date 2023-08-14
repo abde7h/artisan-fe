@@ -30,7 +30,7 @@ export default function Navbar() {
   const handleSearch = () => {};
   return (
     <nav className="max-w-[1440px] mx-auto flex justify-between items-center sm:px-16 px-6 py-4">
-      <Link href="http://localhost:3000">
+      <Link href="/">
         <BsIncognito className="w-20 h-8" />
         {/*<Image src="/" width={100} height={100} alt="Logo Artisan" />*/}
       </Link>

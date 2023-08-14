@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import PostsList from "./components/PostsList"
+import PostsList from "../app/components/PostsList"
 
 export default function HomePage() {
   interface User {

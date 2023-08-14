@@ -2,6 +2,7 @@
 
 import React, { useState, Fragment, useEffect } from "react";
 import { Combobox, Transition } from "@headlessui/react";
+import Link from "next/link";
 
 interface ArtisanDTO {
   username: string;
@@ -26,7 +27,6 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Datos recibidos:", data);
         setArtisans(data);
       })
       .catch((error) => console.error("Error fetching data: ", error));
@@ -72,46 +72,52 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
               static
             >
               {filteredArtisans.map((artisan) => (
-                <Combobox.Option
-                  key={artisan.username}
-                  className={({ active }) =>
-                    `${active ? "bg-gray-100 text-gray-800 " : "text-gray-900"}`
-                  }
-                  value={artisan.username}
-                >
-                  {({ selected, active }) => (
-                    <>
-                      <div className="flex items-center">
-                        {artisan.image && (
-                          <img
-                            src={artisan.image}
-                            alt={artisan.username}
-                            className="w-10 h-10 rounded-full mr-3"
-                          />
-                        )}
-                        <div>
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                            {artisan.name} {artisan.surnames}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            @{artisan.username}
-                          </span>
+                <Link href={`http://localhost:3000/${artisan.username}`}>
+                  <Combobox.Option
+                    key={artisan.username}
+                    className={({ active }) =>
+                      `${
+                        active ? "bg-gray-100 text-gray-800 " : "text-gray-900"
+                      }`
+                    }
+                    value={artisan.username}
+                  >
+                    {({ selected, active }) => (
+                      <>
+                        <div className="flex items-center">
+                          {artisan.image && (
+                            <img
+                              src={artisan.image}
+                              alt={artisan.username}
+                              className="w-10 h-10 rounded-full mr-3"
+                            />
+                          )}
+                          <div>
+                            <span
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
+                            >
+                              {artisan.name} {artisan.surnames}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              @{artisan.username}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      {selected && (
-                        <span
-                          className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                            active ? "text-white" : "text-pribg-primary-purple"
-                          }`}
-                        ></span>
-                      )}
-                    </>
-                  )}
-                </Combobox.Option>
+                        {selected && (
+                          <span
+                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                              active
+                                ? "text-white"
+                                : "text-pribg-primary-purple"
+                            }`}
+                          ></span>
+                        )}
+                      </>
+                    )}
+                  </Combobox.Option>
+                </Link>
               ))}
             </Combobox.Options>
           </Transition>
