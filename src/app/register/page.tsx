@@ -1,5 +1,6 @@
 import Header from "../components/Header";
-import RegisterForm from "./register-form";
+import UserRegisterForm from "./user-register-form";
+import Image from 'next/image';
 
 export default async function RegisterPage() {
     // await new Promise((resolve) => {
@@ -7,16 +8,23 @@ export default async function RegisterPage() {
     // });
     return (
         <>
-            {/*<Header />*/}
-            <section className="py-8 bg-ct-blue-600 min-h-screen grid place-items-center">
-                <div className="w-full">
-                    <h1 className="text-4xl xl:text-6xl text-center font-[600] text-ct-yellow-600 mb-4">
-                        Welcome to CodevoWeb!
-                    </h1>
-                    <h2 className="text-lg text-center mb-4 text-ct-dark-200">
-                        Sign Up To Get Started!
-                    </h2>
-                    <RegisterForm />
+            {<Header />}
+            <section className="min-h-screen grid place-items-center bg-[url('/gradiente-2.avif')] bg-cover bg-center">
+                <div className="w-full h-3/4 flex flex-row">
+                    <div className="w-full max-w-md relative mx-auto flex justify-center items-center">
+                        <Image
+                            src="/img-register.png"
+                            alt="Picture of the author"
+                            layout="fill"
+                            objectFit="cover"
+                        />
+                    </div>
+
+                    <div className="flex items-center">
+                        <div className="w-0.5 h-3/4 bg-black"></div>
+                    </div>
+
+                    <UserRegisterForm />
                 </div>
             </section>
         </>

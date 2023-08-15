@@ -18,13 +18,13 @@ const FormInput: React.FC<FormInputProps> = ({
     } = useFormContext();
     return (
         <div className="">
-            <label htmlFor={name} className="block text-ct-blue-600 mb-3">
+            <label htmlFor={name} className="block mb-3">
                 {label}
             </label>
             <input
                 type={type}
                 placeholder=" "
-                className="block w-full rounded-2xl appearance-none focus:outline-none py-2 px-4 border border-black"
+                className="block w-full rounded-2xl appearance-none focus:outline-none focus:border-primario py-2 px-4 border border-black"
                 {...register(name)}
             />
             {errors[name] && (

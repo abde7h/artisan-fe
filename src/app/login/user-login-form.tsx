@@ -9,11 +9,11 @@ import FormInput from "../components/FormInput";
 import Link from "next/link";
 import { LoadingButton } from "../components/LoadingButton";
 import useStore from "@/store";
-import { handleApiError } from "@/lib/helpers";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { getCookies, setCookie, deleteCookie } from 'cookies-next';
 
-export default function LoginForm() {
+export default function UserLoginForm() {
     const store = useStore();
     const router = useRouter();
 
@@ -31,29 +31,25 @@ export default function LoginForm() {
         if (isSubmitSuccessful) {
             reset();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSubmitSuccessful]);
 
     useEffect(() => {
         store.reset();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function LoginUserFunction(credentials: LoginUserInput) {
         store.setRequestLoading(true);
         try {
-            await apiLoginUser(JSON.stringify(credentials));
+            //await apiLoginUser(JSON.stringify(credentials));
 
-            toast.success("Logged in successfully");
-            return router.push("/profile");
+            toast.success("Inicio de sesión con éxito!");
+            // Crear cookie aquí
+            setCookie("userLogged", JSON.stringify(credentials));
+            return router.push("/");
         } catch (error: any) {
             console.log(error);
-            if (error instanceof Error) {
-                handleApiError(error);
-            } else {
-                toast.error(error.message);
-                console.log("Error message:", error.message);
-            }
+            toast.error(error.message);
+            console.log("Error message:", error.message);
         } finally {
             store.setRequestLoading(false);
         }
@@ -67,29 +63,29 @@ export default function LoginForm() {
         <FormProvider {...methods}>
             <form
                 onSubmit={handleSubmit(onSubmitHandler)}
-                className="max-w-md w-full mx-auto overflow-hidden shadow-lg bg-ct-dark-200 rounded-2xl p-8 space-y-5"
+                className="max-w-md w-full h-fit self-center mx-auto overflow-hidden shadow-lg bg-secundario rounded-2xl p-8 space-y-5"
             >
-                <FormInput label="Email" name="email" type="email" />
-                <FormInput label="Password" name="password" type="password" />
+                <FormInput label="Correo electrónico" name="email" type="email" />
+                <FormInput label="Contraseña" name="password" type="password" />
 
                 <div className="text-right">
                     <Link href="#" className="">
-                        Forgot Password?
+                        Has olvidado tu contraseña?
                     </Link>
                 </div>
                 <LoadingButton
                     loading={store.requestLoading}
-                    textColor="text-ct-blue-600"
                 >
-                    Login
+                    Iniciar sesión
                 </LoadingButton>
                 <span className="block">
-                    Need an account?{" "}
-                    <Link href="/register" className="text-ct-blue-600">
-                        Sign Up Here
+                    ¿Necesitas una cuenta?{" "}
+                    <Link href="/register" className="text-yellow-900">
+                        Registrarse
                     </Link>
                 </span>
             </form>
         </FormProvider>
+
     );
 }

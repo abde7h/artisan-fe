@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 import Link from "next/link";
 import useSession from "@/lib/useSession";
 import useStore from "@/store";
-import { apiLogoutUser } from "@/lib/api-requests";
+import { logoutUser } from "@/lib/api-requests";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
     const handleLogout = async () => {
         store.setRequestLoading(true);
         try {
-            await apiLogoutUser();
+            await logoutUser();
         } catch (error) {
         } finally {
             store.reset();
@@ -25,11 +25,11 @@ const Header = () => {
 
     return (
         <>
-            <header className="bg-white h-20">
+            <header className="h-20 w-full absolute">
                 <nav className="h-full flex justify-between container items-center">
                     <div>
-                        <Link href="/" className="text-ct-dark-600 text-2xl font-semibold">
-                            CodevoWeb
+                        <Link href="/" className="text-primario text-4xl font-semibold">
+                            Artisan
                         </Link>
                     </div>
                     <ul className="flex items-center gap-4">

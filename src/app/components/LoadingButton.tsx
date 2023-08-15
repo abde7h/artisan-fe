@@ -11,7 +11,7 @@ type LoadingButtonProps = {
 
 export const LoadingButton: React.FC<LoadingButtonProps> = ({
     textColor = "text-white",
-    btnColor = "bg-ct-yellow-600",
+    btnColor = "bg-primario",
     children,
     loading = false,
 }) => {
@@ -19,14 +19,14 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
         <button
             type="submit"
             className={twMerge(
-                `w-full py-3 font-semibold rounded-lg outline-none border-none flex justify-center`,
-                `${btnColor} ${loading && "bg-[#ccc]"}`
+                `w-full py-3 font-semibold rounded-2xl outline-none border-none flex justify-center`,
+                `${btnColor} ${loading && "bg-primario"}`
             )}
         >
             {loading ? (
                 <div className="flex items-center gap-3">
                     <Spinner />
-                    <span className="text-slate-500 inline-block">Loading...</span>
+                    <span className="text-secundario inline-block">Loading...</span>
                 </div>
             ) : (
                 <span className={`${textColor}`}>{children}</span>
