@@ -40,8 +40,8 @@ export default function UserLoginForm() {
     async function LoginUserFunction(credentials: LoginUserInput) {
         store.setRequestLoading(true);
         try {
-            //await apiLoginUser(JSON.stringify(credentials));
-
+            await apiLoginUser(JSON.stringify(credentials));
+            
             toast.success("Inicio de sesión con éxito!");
             // Crear cookie aquí
             setCookie("userLogged", JSON.stringify(credentials));

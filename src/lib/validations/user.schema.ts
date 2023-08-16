@@ -7,6 +7,11 @@ export const RegisterUserSchema = z
         required_error: "Nombre requerido",
       })
       .min(1, "Nombre requerido"),
+    surnames: z
+      .string({
+        required_error: "Nombre requerido",
+      })
+      .min(1, "Nombre requerido"),
     username: z
       .string({
         required_error: "Nombre de usuario requerido",

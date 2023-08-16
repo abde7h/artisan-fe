@@ -7,6 +7,10 @@ type FormInputProps = {
     type?: string;
 };
 
+const inputStyles = {
+    height: "5%",
+  };
+
 const FormInput: React.FC<FormInputProps> = ({
     label,
     name,
@@ -26,6 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
                 placeholder=" "
                 className="block w-full rounded-2xl appearance-none focus:outline-none focus:border-primario py-2 px-4 border border-black"
                 {...register(name)}
+                style={inputStyles}
             />
             {errors[name] && (
                 <span className="text-red-500 text-xs pt-1 block">

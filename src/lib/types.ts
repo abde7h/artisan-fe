@@ -9,14 +9,24 @@ export interface UserProfile {
     image: string;
 }
 
-export interface UserRegister {
+export interface UserCreate {
     username: string;
     email: string;
     password: string;
     name: string;
+    surnames: string;
     telephone: string;
     description: string | null;
-    image: string;
+    image: string | null;
+}
+
+export interface SessionInterface {
+    user: {
+      id: string;
+      username: string;
+      //email: string;
+      image: string;
+    };
 }
 
 // export interface UserResponse {

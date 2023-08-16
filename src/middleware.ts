@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
     if ((req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register")) && (!loggedIn || redirectToLogin))
         return;
 
-    // if (!loggedIn) {
+    // if (!loggedIn && (!req.nextUrl.pathname.startsWith("/login") || !req.nextUrl.pathname.startsWith("/register"))) {
     //     return NextResponse.redirect(new URL("/login", new URL(req.url)));
     // }
 

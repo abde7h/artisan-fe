@@ -1,4 +1,4 @@
-import { UserProfile, UserLoginResponse, UserResponse, UserRegister } from "./types";
+import { UserProfile, UserCreate } from "./types";
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:8080/1.0.0";
 
@@ -20,10 +20,12 @@ const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:8080/1.
 
 export async function apiRegisterUser(credentials: string): Promise<UserProfile> {
     try {
-        const { username, email, password, name, telephone, description, image } = JSON.parse(credentials);
-        const userRegister: UserRegister = { username, email, password, name, telephone, description, image };
+        const { username, email, password, name, surnames, telephone, description, image } = JSON.parse(credentials);
+        const userRegister: UserCreate = { username, email, password, name, surnames, telephone, image, description };
+        userRegister.image = "hola";
+        console.log(userRegister)
 
-        const response = await fetch(`${SERVER_ENDPOINT}/user/add`, {
+        const response = await fetch(`http://localhost:8080/1.0.0/user/add`, {
             method: "POST",
             //credentials: "include",
             headers: {

@@ -31,7 +31,7 @@ export default function UserRegisterForm() {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            reset();
+            //reset();
         }
     }, [isSubmitSuccessful]);
 
@@ -63,6 +63,7 @@ export default function UserRegisterForm() {
                 className="max-w-md w-full h-fit self-center mx-auto overflow-hidden shadow-lg bg-secundario rounded-2xl p-8 space-y-5"
             >
                 <FormInput label="Nombre" name="name" />
+                <FormInput label="Apellidos" name="surnames" />
                 <FormInput label="Nombre de usuario" name="username" />
                 <FormInput label="Correo electrónico" name="email" type="email" />
                 <FormInput label="Contraseña" name="password" type="password" />

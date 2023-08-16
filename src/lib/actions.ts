@@ -1,7 +1,8 @@
 //import { GraphQLClient } from "graphql-request";
 
-import { cookies } from 'next/headers'
-import { UserProfile } from "@/common.types";
+import { cookies } from "next/headers";
+import { UserProfile, SessionInterface } from "@/common.types";
+import { apiLoginUser } from "./api-requests";
 
 //import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
 //import { ProjectForm } from "@/common.types";
@@ -14,6 +15,21 @@ const apiUrl = isProduction
 const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_SERVER_URL
   : "http://localhost:3000";
+
+// export async function getCurrentUser() {
+//   const userLogged = cookies().get("userLogged");
+//   const artisanLogged = cookies().get("artisanLogged");
+
+//   const hola = JSON.parse(decodeURIComponent(userLogged));
+
+//   if (userLogged) {
+//     const user
+//     return await apiLoginUser();
+//   } else {
+
+//   }
+
+// }
 
 /*export const getUser = (email: string) => {
   fetch(`http://localhost:8080/1.0.0/user/email/${email}`)
@@ -38,23 +54,23 @@ const serverUrl = isProduction
   } as { user?: UserProfile };
 };*/
 
-export const getUser = async (
-  email: string
-): Promise<{ user?: UserProfile }> => {
-
-  try {
-    const response = await fetch(
-      `http://localhost:8080/1.0.0/user/email/${email}`, {
-        headers: {
-          "Authorization": "JWT " + cookies().get("next-auth.session-token"),
-        }
-      }
-    );
-    const data = await response.json();
-    return data as { user?: UserProfile };
-  } catch (error) {
-    throw error;
-  }
+// export const getUser = async (
+//   email: string
+// ): Promise<{ user?: UserProfile }> => {
+//   try {
+//     const response = await fetch(
+//       `http://localhost:8080/1.0.0/user/email/${email}`,
+//       {
+//         headers: {
+//           Authorization: "JWT " + cookies().get("next-auth.session-token"),
+//         },
+//       }
+//     );
+//     const data = await response.json();
+//     return data as { user?: UserProfile };
+//   } catch (error) {
+//     throw error;
+//   }
 
   // return {
   //   user_id: "123456",
@@ -67,38 +83,38 @@ export const getUser = async (
   //   description: "Esta es una descripción de usuario.",
   //   image: "ruta/a/la/imagen.jpg",
   // } as { user?: UserProfile };
-};
+// };
 
-export const createUser = async (
-  name: string,
-  email: string,
-  avatarUrl: string
-): Promise<any> => {
-  try {
-    const response = await fetch(`http://localhost:8080/1.0.0/user/add`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "JWT " + process.env.NEXTAUTH_SECRET,
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        image: avatarUrl,
-      }),
-    });
+// export const createUser = async (
+//   name: string,
+//   email: string,
+//   avatarUrl: string
+// ): Promise<any> => {
+//   try {
+//     const response = await fetch(`http://localhost:8080/1.0.0/user/add`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: "JWT " + process.env.NEXTAUTH_SECRET,
+//       },
+//       body: JSON.stringify({
+//         name,
+//         email,
+//         image: avatarUrl,
+//       }),
+//     });
 
-    if (!response.ok) {
-      throw new Error(
-        `Error creating user: ${response.status} ${response.statusText}`
-      );
-    }
+//     if (!response.ok) {
+//       throw new Error(
+//         `Error creating user: ${response.status} ${response.statusText}`
+//       );
+//     }
 
-    return response.json();
-  } catch (error) {
-    throw error;
-  }
-};
+//     return response.json();
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 /* const isProduction = process.env.NODE_ENV === 'production';
 const apiUrl = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || '' : 'http://127.0.0.1:4000/graphql';
