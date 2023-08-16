@@ -2,13 +2,17 @@ import { User, Session } from 'next-auth'
 
 export interface UserProfile {
     user_id: string;
-    name: string;
+    username: string;
     email: string;
+    password: string;
+    name: string;
+    surnames: string;
+    telephone: string;
     description: string | null;
-    avatarUrl: string;
+    image: string;
     //githubUrl: string | null;
     //linkedinUrl: string | null;
-    projects: {
+    /*projects: {
       edges: { node: ProjectInterface }[];
       pageInfo: {
         hasPreviousPage: boolean;
@@ -16,6 +20,15 @@ export interface UserProfile {
         startCursor: string;
         endCursor: string;
       };
+    };*/
+}
+
+export interface SessionInterface extends Session {
+    user: User & {
+      id: string;
+      name: string;
+      email: string;
+      avatarUrl: string;
     };
 }
 
