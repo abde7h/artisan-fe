@@ -1,11 +1,14 @@
+import { getCurrentUser } from "@/lib/actions";
+import { redirect } from "next/navigation";
 import Header from "../components/Header";
 import UserLoginForm from "./user-login-form";
 import Image from 'next/image';
+import { cookies } from "next/headers";
 
 export default async function LoginPage() {
-    // await new Promise((resolve) => {
-    //   setTimeout(resolve, 1000);
-    // });
+
+    if (cookies().get("userLogged")) redirect("/");
+
     return (
         <>
             {<Header />}

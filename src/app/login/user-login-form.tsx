@@ -4,7 +4,7 @@ import { LoginUserInput, LoginUserSchema } from "@/lib/validations/user.schema";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { apiLoginUser } from "@/lib/api-requests";
+import { loginUser } from "@/lib/actions";
 import FormInput from "../components/FormInput";
 import Link from "next/link";
 import { LoadingButton } from "../components/LoadingButton";
@@ -29,7 +29,7 @@ export default function UserLoginForm() {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            reset();
+            //reset();
         }
     }, [isSubmitSuccessful]);
 
@@ -40,11 +40,11 @@ export default function UserLoginForm() {
     async function LoginUserFunction(credentials: LoginUserInput) {
         store.setRequestLoading(true);
         try {
-            await apiLoginUser(JSON.stringify(credentials));
+            await loginUser(credentials);
             
             toast.success("Inicio de sesión con éxito!");
             // Crear cookie aquí
-            setCookie("userLogged", JSON.stringify(credentials));
+            //setCookie("userLogged", JSON.stringify(credentials));
             return router.push("/");
         } catch (error: any) {
             console.log(error);

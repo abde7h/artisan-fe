@@ -12,15 +12,15 @@ export interface UserProfile {
     image: string;
     //githubUrl: string | null;
     //linkedinUrl: string | null;
-    /*projects: {
-      edges: { node: ProjectInterface }[];
-      pageInfo: {
-        hasPreviousPage: boolean;
-        hasNextPage: boolean;
-        startCursor: string;
-        endCursor: string;
-      };
-    };*/
+    // projects: {
+    //   edges: { node: ProjectInterface }[];
+    //   pageInfo: {
+    //     hasPreviousPage: boolean;
+    //     hasNextPage: boolean;
+    //     startCursor: string;
+    //     endCursor: string;
+    //   };
+    // };
 }
 
 export interface SessionInterface extends Session {

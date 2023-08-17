@@ -7,7 +7,7 @@ import ProjectForm from "../components/ProjectForm";
 //import ProjectForm from "@/components/ProjectForm";
 
 const CreateProduct = async () => {
-  const session = await getCurrentUser();
+  const userLogged = await getCurrentUser();
 
   //if (!session?.user) redirect("/")
 

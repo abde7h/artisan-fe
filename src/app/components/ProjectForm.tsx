@@ -10,11 +10,11 @@ import CustomMenu from './CustomMenu';
 import { categoryFilters } from '@/constant';
 import { updateProject, createNewProject, fetchToken } from '@/lib/actions';
 import { FormState, ProjectInterface } from '@/common.types';
-import { SessionInterface } from '@/lib/types'
+import { UserLoggedInterface } from '@/lib/types'
 
 type Props = {
     type: string,
-    session: SessionInterface,
+    session: UserLoggedInterface,
     project?: ProjectInterface
 }
 

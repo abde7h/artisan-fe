@@ -4,6 +4,7 @@ export interface UserProfile {
     email: string;
     password: string;
     name: string;
+    surnames: string;
     telephone: string;
     description: string | null;
     image: string;
@@ -20,11 +21,12 @@ export interface UserCreate {
     image: string | null;
 }
 
-export interface SessionInterface {
+export interface UserLoggedInterface {
     user: {
       id: string;
       username: string;
-      //email: string;
+      email: string;
+      isArtisan: boolean;
       image: string;
     };
 }

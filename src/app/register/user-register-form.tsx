@@ -7,7 +7,8 @@ import {
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { apiRegisterUser } from "@/lib/api-requests";
+import { registerUser } from "@/lib/actions";
+import { getUser } from "@/lib/api-requests";
 import FormInput from "../components/FormInput";
 import Link from "next/link";
 import { LoadingButton } from "../components/LoadingButton";
@@ -31,21 +32,21 @@ export default function UserRegisterForm() {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            //reset();
+            reset();
         }
     }, [isSubmitSuccessful]);
 
     async function RegisterUserFunction(credentials: RegisterUserInput) {
         store.setRequestLoading(true);
         try {
-            const user = await apiRegisterUser(JSON.stringify(credentials));
-            
+            const user = await registerUser(credentials);
+            //console.log("fgsufsdufsdfyusdgfuysgudfgsugdfusgdufy" + user)
             toast.success("Registro con éxito!");
             store.setAuthUser(user);
             return router.push("/login");
         } catch (error: any) {
             console.log(error);
-            toast.error(error.message);
+            toast.error(`Ya hay un usuario creado con el email "${credentials.email}"!`);
             console.log("Error message:", error.message);
         } finally {
             store.setRequestLoading(false);
@@ -53,6 +54,9 @@ export default function UserRegisterForm() {
     }
 
     const onSubmitHandler: SubmitHandler<RegisterUserInput> = (values) => {
+        // if (getUser(values.email)) {
+
+        // }
         RegisterUserFunction(values);
     };
 
