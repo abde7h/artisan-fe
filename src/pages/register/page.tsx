@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Header from "../../app/components/Header";
 import UserRegisterForm from "./user-register-form";
 import Image from 'next/image';
 

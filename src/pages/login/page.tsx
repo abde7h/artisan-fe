@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/lib/actions";
 import { redirect } from "next/navigation";
-import Header from "../components/Header";
+import Header from "../../app/components/Header";
 import UserLoginForm from "./user-login-form";
 import Image from 'next/image';
 import { cookies } from "next/headers";

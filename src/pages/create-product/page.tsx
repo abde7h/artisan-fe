@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
 //import { getCurrentUser } from "@/lib/session";
-import Modal from "../components/Modal";
+import Modal from "../../app/components/Modal";
 import { getCurrentUser } from "@/lib/session";
-import ProjectForm from "../components/ProjectForm";
+import ProjectForm from "../../app/components/ProjectForm";
 //import ProjectForm from "@/components/ProjectForm";
 
 const CreateProduct = async () => {
