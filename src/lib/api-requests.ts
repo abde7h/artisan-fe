@@ -1,4 +1,5 @@
-import { UserProfile, UserCreate } from "./types";
+import { UserProfile, UserCreate, ArtisanProfile } from "./types";
+import { LoginUserInput } from "./validations/user.schema";
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:8080/1.0.0";
 
@@ -29,12 +30,50 @@ export async function createUser(newUser: UserCreate): Promise<UserProfile> {
     }
 }
 
-export async function getUser(email: string): Promise<{ user?: UserProfile }> {
+export async function getUser(credentials: LoginUserInput): Promise<{ user?: UserProfile }> {
     try {
-        const response = await fetch(`${SERVER_ENDPOINT}/user/email/${email}`);
+        const { email, password } = credentials;
+        const response = await fetch(`${SERVER_ENDPOINT}/user/email/${email}/${password}`);
 
         const data = await response.json();
         return data as { user?: UserProfile };
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function createArtisan(newUser: UserCreate): Promise<ArtisanProfile> {
+    try {
+        console.log(JSON.stringify(newUser))
+        const response = await fetch(`http://localhost:8080/1.0.0/artisan/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        });
+
+        console.log(response.status)
+
+        if (!response.ok) {
+            throw new Error(
+                `Error creating user: ${response.status} ${response.statusText}`
+            );
+        }
+
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getArtisan(credentials: LoginUserInput): Promise<{ user?: ArtisanProfile }> {
+    try {
+        const { email, password } = credentials;
+        const response = await fetch(`${SERVER_ENDPOINT}/artisan/email/${email}/${password}`);
+
+        const data = await response.json();
+        return data as { user?: ArtisanProfile };
     } catch (error) {
         throw error;
     }

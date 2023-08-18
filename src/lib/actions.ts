@@ -1,12 +1,9 @@
-import { UserProfile, SessionInterface } from "@/common.types";
-import { createUser, getUser } from "./api-requests";
-import { UserCreate, UserLoggedInterface } from "./types";
+import { createArtisan, createUser, getUser, getArtisan } from "./api-requests";
+import { UserCreate, UserProfile, UserLoggedInterface, ArtisanProfile } from "./types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { LoginUserInput, RegisterUserInput } from "./validations/user.schema";
 import { getCookie, setCookie, deleteCookie, CookieValueTypes } from 'cookies-next';
 import { NextApiRequest, NextApiResponse } from "next";
-
-//const nextCookies = cookies();
 
 export async function registerUser(
   credentials: RegisterUserInput
@@ -30,13 +27,52 @@ export async function registerUser(
 export async function loginUser(
   credentials: LoginUserInput
 ): Promise<{ user?: UserProfile }> {
-  const user: { user?: UserProfile } = await getUser(credentials.email);
-  const hola: UserProfile = user as UserProfile;
-  const { user_id, username, email, image } = hola;
+  const user: { user?: UserProfile } = await getUser(credentials);
+  const { user_id, username, email, image } = user as UserProfile;
 
   const userLogged: UserLoggedInterface = {
     user: {
       id: user_id,
+      username,
+      email,
+      isArtisan: false,
+      image,
+    },
+  };
+
+  setCookie("userLogged", JSON.stringify(userLogged));
+
+  return user;
+}
+
+export async function registerArtisan(
+  credentials: RegisterUserInput
+): Promise<ArtisanProfile> {
+  const { username, email, password, name, surnames, telephone } = credentials;
+
+  const newUser: UserCreate = {
+    username,
+    email,
+    password,
+    name,
+    surnames,
+    telephone,
+    description: null,
+    image: "imagen usuario",
+  };
+
+  return await createArtisan(newUser);
+}
+
+export async function loginArtisan(
+  credentials: LoginUserInput
+): Promise<{ user?: ArtisanProfile }> {
+  const user: { user?: ArtisanProfile } = await getArtisan(credentials);
+  const { artisan_id, username, email, image } = user as ArtisanProfile;
+
+  const userLogged: UserLoggedInterface = {
+    user: {
+      id: artisan_id,
       username,
       email,
       isArtisan: true,
