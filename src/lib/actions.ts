@@ -56,7 +56,7 @@ export async function loginUser(
   //     id: "1",
   //     username: "diego",
   //     email: "email",
-  //     isArtisan: true,
+  //     isArtisan: false,
   //     image: "imagendiego",
   //   },
   // };
