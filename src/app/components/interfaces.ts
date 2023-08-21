@@ -1,4 +1,5 @@
 export interface FeedItem {
+    id: number;
     image: string;
     name: string;
     artisan: {

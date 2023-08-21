@@ -1,10 +1,9 @@
+import HomePage from '@/app/components/Homepage'
 import React from 'react'
 
 const index = () => {
   return (
-    <div>
-        <h1>Artisan</h1>
-    </div>
+    <HomePage />
   )
 }
 
