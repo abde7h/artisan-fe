@@ -17,7 +17,7 @@ const ProductForm = ({ type, artisan, product }: Props) => {
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-
+  
   const [form, setForm] = useState<FormProductState>({
     artisan_id: artisan?.user?.id,
     name: product?.name || "",

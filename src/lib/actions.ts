@@ -1,4 +1,4 @@
-import { createArtisan, createUser, getUser, getArtisan } from "./api-requests";
+import { createArtisan, createUser, getUser, getArtisan, createProduct } from "./api-requests";
 import {
   UserCreate,
   UserProfile,
@@ -128,7 +128,12 @@ export const createNewProduct = async (
   form: FormProductState,
   artisanId: string
 ) => {
-  // const imageUrl = await uploadImage(form.image);
+  console.log(form)
+  //const product = await createProduct(form);
+
+
+  //const imageUrl = await uploadImage(form.image);
+
 
   // if (imageUrl.url) {
   //   client.setHeader("Authorization", `Bearer ${token}`);
@@ -145,37 +150,41 @@ export const createNewProduct = async (
 
   //   return makeGraphQLRequest(createProjectMutation, variables);
   // }
-  console.log(form);
+  //return product;
 };
 
-// export const updateProduct = async (form: FormProductState, projectId: string) => {
-//   function isBase64DataURL(value: string) {
-//     const base64Regex = /^data:image\/[a-z]+;base64,/;
-//     return base64Regex.test(value);
-//   }
+export const updateProduct = async (form: FormProductState, projectId: string) => {
+  function isBase64DataURL(value: string) {
+    const base64Regex = /^data:image\/[a-z]+;base64,/;
+    return base64Regex.test(value);
+  }
 
-//   let updatedForm = { ...form };
+  let updatedForm = { ...form };
 
-//   const isUploadingNewImage = isBase64DataURL(form.image);
+  const isUploadingNewImage = isBase64DataURL(form.image);
 
-//   if (isUploadingNewImage) {
-//     const imageUrl = await uploadImage(form.image);
+  if (isUploadingNewImage) {
+    const imageUrl = await uploadImage(form.image);
 
-//     if (imageUrl.url) {
-//       updatedForm = { ...updatedForm, image: imageUrl.url };
-//     }
-//   }
+    if (imageUrl.url) {
+      updatedForm = { ...updatedForm, image: imageUrl.url };
+    }
+  }
 
-//   client.setHeader("Authorization", `Bearer ${token}`);
+  client.setHeader("Authorization", `Bearer ${token}`);
 
-//   const variables = {
-//     id: projectId,
-//     input: updatedForm,
-//   };
+  const variables = {
+    id: projectId,
+    input: updatedForm,
+  };
 
-//   return makeGraphQLRequest(updateProjectMutation, variables);
-// };
+  return makeGraphQLRequest(updateProjectMutation, variables);
+};
 
+
+function uploadImage(image: string) {
+  throw new Error("Function not implemented.");
+}
 // export const deleteProject = (id: string, token: string) => {
 //   client.setHeader("Authorization", `Bearer ${token}`);
 //   return makeGraphQLRequest(deleteProjectMutation, { id });
