@@ -1,12 +1,12 @@
 "use client";
 
-import { UserProfile } from "@/lib/types";
+import { UserProfile, ArtisanProfile } from "@/lib/types";
 import { create } from "zustand";
 
 type Store = {
   authUser: UserProfile | null;
   requestLoading: boolean;
-  setAuthUser: (user: UserProfile | null) => void;
+  setAuthUser: (user: any | null) => void;
   setRequestLoading: (isLoading: boolean) => void;
   reset: () => void;
 };
