@@ -1,8 +1,19 @@
 import { createArtisan, createUser, getUser, getArtisan } from "./api-requests";
-import { UserCreate, UserProfile, UserLoggedInterface, ArtisanProfile, FormProductState } from "./types";
+import {
+  UserCreate,
+  UserProfile,
+  UserLoggedInterface,
+  ArtisanProfile,
+  FormProductState,
+} from "./types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { LoginUserInput, RegisterUserInput } from "./validations/user.schema";
-import { getCookie, setCookie, deleteCookie, CookieValueTypes } from 'cookies-next';
+import {
+  getCookie,
+  setCookie,
+  deleteCookie,
+  CookieValueTypes,
+} from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function registerUser(
@@ -39,6 +50,16 @@ export async function loginUser(
       image,
     },
   };
+
+  // const userLogged: UserLoggedInterface = {
+  //   user: {
+  //     id: "1",
+  //     username: "diego",
+  //     email: "email",
+  //     isArtisan: true,
+  //     image: "imagendiego",
+  //   },
+  // };
 
   setCookie("userLogged", JSON.stringify(userLogged));
 
@@ -98,76 +119,78 @@ export async function loginArtisan(
 export const getUserLogged = (): string => {
   const userLoggedCookie = getCookie("userLogged");
   let userLoggedString: string = "";
-  if (userLoggedCookie)
-    userLoggedString = userLoggedCookie?.toString();
+  if (userLoggedCookie) userLoggedString = userLoggedCookie?.toString();
 
   return userLoggedString;
-}
+};
 
-export const createNewProduct = async (form: FormProductState, artisanId: string) => {
+export const createNewProduct = async (
+  form: FormProductState,
+  artisanId: string
+) => {
   // const imageUrl = await uploadImage(form.image);
 
   // if (imageUrl.url) {
   //   client.setHeader("Authorization", `Bearer ${token}`);
 
-    // const variables = {
-    //   input: { 
-    //     ...form, 
-    //     image: imageUrl.url, 
-    //     createdBy: { 
-    //       link: creatorId 
-    //     }
-    //   }
-    // };
+  // const variables = {
+  //   input: {
+  //     ...form,
+  //     image: imageUrl.url,
+  //     createdBy: {
+  //       link: creatorId
+  //     }
+  //   }
+  // };
 
   //   return makeGraphQLRequest(createProjectMutation, variables);
   // }
-  console.log(form)
+  console.log(form);
 };
 
-export const updateProduct = async (form: FormProductState, projectId: string) => {
-  function isBase64DataURL(value: string) {
-    const base64Regex = /^data:image\/[a-z]+;base64,/;
-    return base64Regex.test(value);
-  }
+// export const updateProduct = async (form: FormProductState, projectId: string) => {
+//   function isBase64DataURL(value: string) {
+//     const base64Regex = /^data:image\/[a-z]+;base64,/;
+//     return base64Regex.test(value);
+//   }
 
-  let updatedForm = { ...form };
+//   let updatedForm = { ...form };
 
-  const isUploadingNewImage = isBase64DataURL(form.image);
+//   const isUploadingNewImage = isBase64DataURL(form.image);
 
-  if (isUploadingNewImage) {
-    const imageUrl = await uploadImage(form.image);
+//   if (isUploadingNewImage) {
+//     const imageUrl = await uploadImage(form.image);
 
-    if (imageUrl.url) {
-      updatedForm = { ...updatedForm, image: imageUrl.url };
-    }
-  }
+//     if (imageUrl.url) {
+//       updatedForm = { ...updatedForm, image: imageUrl.url };
+//     }
+//   }
 
-  client.setHeader("Authorization", `Bearer ${token}`);
+//   client.setHeader("Authorization", `Bearer ${token}`);
 
-  const variables = {
-    id: projectId,
-    input: updatedForm,
-  };
+//   const variables = {
+//     id: projectId,
+//     input: updatedForm,
+//   };
 
-  return makeGraphQLRequest(updateProjectMutation, variables);
-};
+//   return makeGraphQLRequest(updateProjectMutation, variables);
+// };
 
-export const deleteProject = (id: string, token: string) => {
-  client.setHeader("Authorization", `Bearer ${token}`);
-  return makeGraphQLRequest(deleteProjectMutation, { id });
-};
+// export const deleteProject = (id: string, token: string) => {
+//   client.setHeader("Authorization", `Bearer ${token}`);
+//   return makeGraphQLRequest(deleteProjectMutation, { id });
+// };
 
-export const uploadImage = async (imagePath: string) => {
-  try {
-    const response = await fetch(`${serverUrl}/api/upload`, {
-      method: "POST",
-      body: JSON.stringify({
-        path: imagePath,
-      }),
-    });
-    return response.json();
-  } catch (err) {
-    throw err;
-  }
-};
+// export const uploadImage = async (imagePath: string) => {
+//   try {
+//     const response = await fetch(`${serverUrl}/api/upload`, {
+//       method: "POST",
+//       body: JSON.stringify({
+//         path: imagePath,
+//       }),
+//     });
+//     return response.json();
+//   } catch (err) {
+//     throw err;
+//   }
+// };

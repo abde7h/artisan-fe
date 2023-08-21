@@ -33,7 +33,7 @@ export async function createUser(newUser: UserCreate): Promise<UserProfile> {
 export async function getUser(credentials: LoginUserInput): Promise<{ user?: UserProfile }> {
     try {
         const { email, password } = credentials;
-        const response = await fetch(`${SERVER_ENDPOINT}/user/email/${email}/${password}`);
+        const response = await fetch(`${SERVER_ENDPOINT}/user/${email}/${password}`);
 
         const data = await response.json();
         return data as { user?: UserProfile };
