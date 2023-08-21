@@ -1,155 +1,61 @@
-import { GraphQLClient } from "graphql-request";
+import { UserProfile, SessionInterface } from "@/common.types";
+import { createUser, getUser } from "./api-requests";
+import { UserCreate, UserLoggedInterface } from "./types";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { LoginUserInput, RegisterUserInput } from "./validations/user.schema";
+import { getCookie, setCookie, deleteCookie, CookieValueTypes } from 'cookies-next';
+import { NextApiRequest, NextApiResponse } from "next";
 
-import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
-import { ProjectForm } from "@/common.types";
+//const nextCookies = cookies();
 
-export const getUser = (email: string) => {
-  fetch(`https:localhost:8080/1.0.0/user/email/${email}`)
-      .then(async res => await res.json())
-      .then(res => {
-          return res
-      })
-      .catch(err => {
-          throw err;
-      })
-};
+export async function registerUser(
+  credentials: RegisterUserInput
+): Promise<UserProfile> {
+  const { username, email, password, name, surnames, telephone } = credentials;
 
-export const createUser = (name: string, email: string, avatarUrl: string) => {
-  client.setHeader("x-api-key", apiKey);
+  const newUser: UserCreate = {
+    username,
+    email,
+    password,
+    name,
+    surnames,
+    telephone,
+    description: null,
+    image: "imagen usuario",
+  };
 
-  const variables = {
-    input: {
-      name: name,
-      email: email,
-      avatarUrl: avatarUrl
+  return await createUser(newUser);
+}
+
+export async function loginUser(
+  credentials: LoginUserInput
+): Promise<{ user?: UserProfile }> {
+  const user: { user?: UserProfile } = await getUser(credentials.email);
+  const hola: UserProfile = user as UserProfile;
+  const { user_id, username, email, image } = hola;
+
+  const userLogged: UserLoggedInterface = {
+    user: {
+      id: user_id,
+      username,
+      email,
+      isArtisan: true,
+      image,
     },
   };
-  
-  return makeGraphQLRequest(createUserMutation, variables);
-};
 
-/* const isProduction = process.env.NODE_ENV === 'production';
-const apiUrl = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || '' : 'http://127.0.0.1:4000/graphql';
-const apiKey = isProduction ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || '' : 'letmein';
-const serverUrl = isProduction ? process.env.NEXT_PUBLIC_SERVER_URL : 'http://localhost:3000';
+  setCookie("userLogged", JSON.stringify(userLogged));
 
-const client = new GraphQLClient(apiUrl);
+  return user;
+}
 
-export const fetchToken = async () => {
-  try {
-    const response = await fetch(`${serverUrl}/api/auth/token`);
-    return response.json();
-  } catch (err) {
-    throw err;
-  }
-};
+export function getCurrentUser(): string | undefined {
+  const userLogged = getCookie("userLogged");
+  console.log("fgdhgdfghdi " + userLogged?.toString());
 
-export const uploadImage = async (imagePath: string) => {
-  try {
-    const response = await fetch(`${serverUrl}/api/upload`, {
-      method: "POST",
-      body: JSON.stringify({
-        path: imagePath,
-      }),
-    });
-    return response.json();
-  } catch (err) {
-    throw err;
-  }
-};
+  // if (userLogged) {
+  //   return JSON.parse(userLogged?.toString)
+  // }
 
-const makeGraphQLRequest = async (query: string, variables = {}) => {
-  try {
-    return await client.request(query, variables);
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const fetchAllProjects = (category?: string | null, endcursor?: string | null) => {
-  client.setHeader("x-api-key", apiKey);
-
-  return makeGraphQLRequest(projectsQuery, { category, endcursor });
-};
-
-export const createNewProject = async (form: ProjectForm, creatorId: string, token: string) => {
-  const imageUrl = await uploadImage(form.image);
-
-  if (imageUrl.url) {
-    client.setHeader("Authorization", `Bearer ${token}`);
-
-    const variables = {
-      input: { 
-        ...form, 
-        image: imageUrl.url, 
-        createdBy: { 
-          link: creatorId 
-        }
-      }
-    };
-
-    return makeGraphQLRequest(createProjectMutation, variables);
-  }
-};
-
-export const updateProject = async (form: ProjectForm, projectId: string, token: string) => {
-  function isBase64DataURL(value: string) {
-    const base64Regex = /^data:image\/[a-z]+;base64,/;
-    return base64Regex.test(value);
-  }
-
-  let updatedForm = { ...form };
-
-  const isUploadingNewImage = isBase64DataURL(form.image);
-
-  if (isUploadingNewImage) {
-    const imageUrl = await uploadImage(form.image);
-
-    if (imageUrl.url) {
-      updatedForm = { ...updatedForm, image: imageUrl.url };
-    }
-  }
-
-  client.setHeader("Authorization", `Bearer ${token}`);
-
-  const variables = {
-    id: projectId,
-    input: updatedForm,
-  };
-
-  return makeGraphQLRequest(updateProjectMutation, variables);
-};
-
-export const deleteProject = (id: string, token: string) => {
-  client.setHeader("Authorization", `Bearer ${token}`);
-  return makeGraphQLRequest(deleteProjectMutation, { id });
-};
-
-export const getProjectDetails = (id: string) => {
-  client.setHeader("x-api-key", apiKey);
-  return makeGraphQLRequest(getProjectByIdQuery, { id });
-};
-
-export const createUser = (name: string, email: string, avatarUrl: string) => {
-  client.setHeader("x-api-key", apiKey);
-
-  const variables = {
-    input: {
-      name: name,
-      email: email,
-      avatarUrl: avatarUrl
-    },
-  };
-  
-  return makeGraphQLRequest(createUserMutation, variables);
-};
-
-export const getUserProjects = (id: string, last?: number) => {
-  client.setHeader("x-api-key", apiKey);
-  return makeGraphQLRequest(getProjectsOfUserQuery, { id, last });
-};
-
-export const getUser = (email: string) => {
-  client.setHeader("x-api-key", apiKey);
-  return makeGraphQLRequest(getUserQuery, { email });
-}; */
+  return userLogged?.toString();
+}
