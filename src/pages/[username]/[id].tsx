@@ -116,7 +116,7 @@ const ProductDetails: React.FC = () => {
         setLiked(false);
         return;
       }
-      
+
       // Si el servidor devuelve un estado 200 OK, entonces el producto ha sido "likeado".
       if (response.ok) {
         const data = await response.json();
@@ -182,12 +182,13 @@ const ProductDetails: React.FC = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-96 object-cover mb-6 rounded-lg shadow-md"
+                  className="w-96 object-cover mb-6 rounded-lg shadow-md"
                 />
+
                 {/* Detalles del artesano */}
                 {artisan && (
                   <Link href={`http://localhost:3000/${artisan.username}`}>
-                    <div className="absolute top-4 left-4 flex flex-col items-center">
+                    <div className="absolute top-4 left-4 flex flex-col items-center cursor-pointer">
                       <img
                         src={artisan.image}
                         alt={artisan.username}
@@ -199,14 +200,14 @@ const ProductDetails: React.FC = () => {
                 )}
 
                 {/* Precio */}
-                <span className="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-3 py-2 rounded-lg">
+                <span className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-2 rounded-lg">
                   {product.price} €
                 </span>
 
                 {/* Botón de Like */}
                 <button
                   onClick={handleLikeToggle}
-                  className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white p-3 rounded-lg focus:outline-none flex items-center"
+                  className="absolute bottom-4 left-56 bg-black bg-opacity-50 text-white p-3 rounded-lg focus:outline-none flex items-center"
                 >
                   {liked ? <HeartFull /> : <HeartEmpty />}
                   <span className="ml-2">

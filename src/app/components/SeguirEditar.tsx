@@ -15,7 +15,7 @@ const SeguirEditar: React.FC<SeguirEditarProps> = ({
   artisanID,
   updateFollowers,
 }) => {
-  const isArtisan = false;
+  const isArtisan = true;
   const [isFollowing, setIsFollowing] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [profileData, setProfileData] = useState({

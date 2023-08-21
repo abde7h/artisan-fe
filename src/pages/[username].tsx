@@ -3,6 +3,7 @@ import NotFound from "@/app/components/NotFound";
 import SeguirEditar from "@/app/components/SeguirEditar";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Product {
   product_id: number;
@@ -44,7 +45,7 @@ function UserProfile() {
 
   const userIsFollowing = false;
   const userName = "artesano1";
-  const isArtisan = false;
+  const isArtisan = true;
 
   const [artisanProfile, setArtisanProfile] = useState<ArtisanProfile | null>(
     null
@@ -189,18 +190,37 @@ function UserProfile() {
                     const artisanUsername =
                       profileData.listartisan &&
                       profileData.listartisan[index]?.username;
+                    const artisanImage =
+                      profileData.listartisan &&
+                      profileData.listartisan[index]?.image;
                     return (
-                      <a
-                        href={`${artisanUsername}/${product.product_id}`}
-                        key={product.product_id}
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src={product.image}
-                          alt={product.description}
-                          className="object-cover w-full h-52 rounded-lg shadow-md"
-                        />
-                      </a>
+                      <div className="relative" key={product.product_id}>
+                        {/* Icono del artesano */}
+                        <Link href={`/${artisanUsername}`}>
+                          <div className="absolute top-4 left-4 flex flex-col items-center cursor-pointer">
+                            <img
+                              src={artisanImage}
+                              alt={artisanUsername}
+                              className="w-10 h-10 rounded-full shadow-lg mb-2"
+                            />
+                            <span className="text-black text-sm">
+                              {artisanUsername}
+                            </span>
+                          </div>
+                        </Link>
+
+                        {/* Imagen del producto */}
+                        <a
+                          href={`${artisanUsername}/${product.product_id}`}
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={product.image}
+                            alt={product.description}
+                            className="object-cover w-full h-52 rounded-lg shadow-md"
+                          />
+                        </a>
+                      </div>
                     );
                   })}
               </div>
