@@ -1,8 +1,9 @@
-"use client"
-
 import Link from 'next/link'
 import styles from './Navigation.module.css'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { getCurrentUser } from '@/lib/session'
+import Button from './Button'
+import AuthProviders from './AuthProviders'
 
 const links = [
   {
@@ -23,8 +24,9 @@ const links = [
   }
 ]
 
-export function Navigation() {
-  const { data: session } = useSession()
+const Navbar = async () => {
+  //const { data: session } = useSession()
+  const session = await getCurrentUser()
 
   console.log(session)
   return (
@@ -36,10 +38,26 @@ export function Navigation() {
               <Link href={route}>{label}</Link>
             </li>
           ))}
-        </ul>
-        {session ? <button onClick={() => signOut()}>Sign out</button> 
-        : <button onClick={() => signIn()}>Sign in</button>}
+        </ul> 
+        {/*session ? <button onClick={() => signOut()}>Sign out</button> 
+        : <button onClick={() => signIn()}>Sign in</button>*/}
+
+        <div /*className='flexCenter gap-4'*/>
+          {session?.user ? (
+            <>
+              {session?.user.name}
+
+              <Link href="/create-product">
+                <Button title='Crear Producto' textColor='text-black' />
+              </Link>
+            </>
+          ) : (
+            <AuthProviders />
+          )}
+        </div>
       </nav>
     </header>
   )
 }
+
+export default Navbar;
