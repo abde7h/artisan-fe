@@ -43,6 +43,39 @@ export interface UserLoggedInterface {
     };
 }
 
+export interface CategoryInterface {
+    category_id: string;
+    name: string;
+}
+
+export interface ProductInterface {
+    product_id: string;
+    artisan_id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: number;
+    category_id: string;
+    creation_date: string;
+    sold: boolean;
+    user_id: string | null;
+    buy_date: string | null;
+}
+
+export type FormProductState = {
+    //product_id: string;
+    artisan_id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: number;
+    category_id: string;
+    creation_date: string;
+    sold: boolean;
+    user_id: string | null;
+    buy_date: string | null;
+};
+
 // export interface UserResponse {
 //     status: string;
 //     data: {

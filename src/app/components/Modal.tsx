@@ -25,7 +25,7 @@ export default function Modal({ children }: { children: ReactNode }) {
                 <Image src="/close.svg" width={17} height={17} alt="close" />
             </button>
 
-            <div ref={wrapper} className="flex justify-start items-center flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto">
+            <div ref={wrapper} className="flex justify-start items-center flex-col absolute h-[95%] w-[90%] bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto">
                 {children}
             </div>
         </div>

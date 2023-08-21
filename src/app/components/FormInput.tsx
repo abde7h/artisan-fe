@@ -8,7 +8,7 @@ type FormInputProps = {
 };
 
 const inputStyles = {
-    height: "5%",
+    height: "4vh",
   };
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -21,14 +21,14 @@ const FormInput: React.FC<FormInputProps> = ({
         formState: { errors },
     } = useFormContext();
     return (
-        <div className="">
-            <label htmlFor={name} className="block mb-3">
+        <div className="mb-4">
+            <label htmlFor={name} className="block text-sm font-bold mb-3">
                 {label}
             </label>
             <input
                 type={type}
                 placeholder=" "
-                className="block w-full rounded-2xl appearance-none focus:outline-none focus:border-primario py-2 px-4 border border-black"
+                className="block w-full rounded-xl shadow appearance-none focus:outline-none focus:border-primario py-2 px-3 border border-black"
                 {...register(name)}
                 style={inputStyles}
             />

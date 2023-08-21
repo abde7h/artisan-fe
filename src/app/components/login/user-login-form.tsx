@@ -4,15 +4,15 @@ import { LoginUserInput, LoginUserSchema } from "@/lib/validations/user.schema";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { loginArtisan } from "@/lib/actions";
-import FormInput from "../../app/components/FormInput";
+import { loginUser } from "@/lib/actions";
+import FormInput from "../FormInput";
 import Link from "next/link";
-import { LoadingButton } from "../../app/components/LoadingButton";
+import { LoadingButton } from "../LoadingButton";
 import useStore from "@/store";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export default function ArtisanLoginForm() {
+export default function UserLoginForm() {
     const store = useStore();
     const router = useRouter();
 
@@ -39,7 +39,7 @@ export default function ArtisanLoginForm() {
     async function LoginUserFunction(credentials: LoginUserInput) {
         store.setRequestLoading(true);
         try {
-            await loginArtisan(credentials);
+            await loginUser(credentials);
             
             toast.success("Inicio de sesión con éxito!");
             return router.push("/");
@@ -65,11 +65,6 @@ export default function ArtisanLoginForm() {
                 <FormInput label="Correo electrónico" name="email" type="email" />
                 <FormInput label="Contraseña" name="password" type="password" />
 
-                <div className="text-right">
-                    <Link href="#" className="">
-                        Has olvidado tu contraseña?
-                    </Link>
-                </div>
                 <LoadingButton
                     loading={store.requestLoading}
                 >
@@ -83,6 +78,5 @@ export default function ArtisanLoginForm() {
                 </span>
             </form>
         </FormProvider>
-
     );
 }

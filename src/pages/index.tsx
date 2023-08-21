@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
+import { AuthPageInvisible } from '@/lib/protect-page';
 
 const index = () => {
   const router = useRouter();
@@ -9,6 +10,8 @@ const index = () => {
   return (
     <div>
       <h1>Artisan</h1>
+      
+      <AuthPageInvisible />
     </div>
   )
 }

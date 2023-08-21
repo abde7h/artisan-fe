@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
+import { useRouter } from "next/navigation";
 
 // export const metadata = {
 //   title: "Create Next App",
@@ -14,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <div>
-      <Navbar />
+      {<Navbar />}
       <main>
         {children}
         <Toaster />
