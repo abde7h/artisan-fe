@@ -18,37 +18,35 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  
+
   const [form, setForm] = useState<FormProductState>({
     artisan_id: artisan?.user?.id,
     name: product?.name || "",
     image: product?.image || "",
     description: product?.description || "",
     price: product?.price || 0,
-
-    
     category_id: product?.category_id || "",
     creation_date: product?.creation_date || new Date().toLocaleDateString(),
     sold: product?.sold || false,
     user_id: product?.user_id || "",
     buy_date: product?.buy_date || "",
-    visible: product?.visible || true
+    visible: product?.visible || true,
   });
 
-  const listaCategorias = [{
-    category_id: '1',
-    name: 'Electrónica'
-  },
-  {
-    category_id: '2',
-    name: 'Ropa'
-  },
-  {
-    category_id: '3',
-    name: 'Hogar'
-  }];
+  // const listaCategorias = [{
+  //   category_id: '1',
+  //   name: 'Electrónica'
+  // },
+  // {
+  //   category_id: '2',
+  //   name: 'Ropa'
+  // },
+  // {
+  //   category_id: '3',
+  //   name: 'Hogar'
+  // }];
 
-  //const listaCategorias: CategoryInterface[] = await getCategories();
+  const listaCategorias = await getCategories();
 
   const handleStateChange = (fieldName: keyof FormProductState, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
@@ -156,13 +154,13 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
         categories={listaCategorias}
         setState={(value) => handleStateChange('category_id', value)}
         />*/}
-      
+
       <select onChange={(e) => handleStateChange('category_id', e.target.value)}>
-      {listaCategorias.map((category) => (
-        <option key={category.category_id} value={category.category_id}>
-          {category.name}
-        </option>
-      ))}
+        {listaCategorias.map((category) => (
+          <option key={category.category_id} value={category.category_id}>
+            {category.name}
+          </option>
+        ))}
       </select>
 
       <div className="flexStart w-full">
