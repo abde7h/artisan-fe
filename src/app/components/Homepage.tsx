@@ -98,7 +98,7 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-5 gap-6">
+    <div className="grid grid-cols-5 gap-6 m-2">
       {feedData.length && followingArtisans.length
         ? prioritizeFollowedArtisans(feedData, followingArtisans).map(
             (feedItem) => (

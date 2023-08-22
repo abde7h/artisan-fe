@@ -89,7 +89,7 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
                             <img
                               src={artisan.image}
                               alt={artisan.username}
-                              className="w-10 h-10 rounded-full mr-3"
+                              className="w-10 h-10 rounded-full mr-3 object-cover"
                             />
                           )}
                           <div>

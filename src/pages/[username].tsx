@@ -239,11 +239,11 @@ function UserProfile() {
                       <div className="relative" key={product.product_id}>
                         {/* Icono del artesano */}
                         <Link href={`/${artisanUsername}`}>
-                          <div className="absolute top-4 left-4 flex flex-col items-center cursor-pointer object-cover">
+                          <div className="absolute top-4 left-4 flex flex-col items-center cursor-pointer">
                             <img
                               src={artisanImage}
                               alt={artisanUsername}
-                              className="w-10 h-10 rounded-full shadow-lg mb-2"
+                              className="w-10 h-10 rounded-full shadow-lg mb-2 object-cover"
                             />
                             <span className="text-black text-sm">
                               {artisanUsername}
