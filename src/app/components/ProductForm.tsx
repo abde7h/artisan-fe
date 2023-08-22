@@ -1,11 +1,12 @@
-import { createNewProduct, updateProduct } from '@/lib/actions'
-import { FormProductState, ProductInterface, UserLoggedInterface } from '@/lib/types'
+import { createNewProduct, editProduct } from '@/lib/actions'
+import { CategoryInterface, FormProductState, ProductInterface, UserLoggedInterface } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import FormField from './FormField'
 import CustomMenu from './create-product/CustomMenu'
 import Button from './Button'
 import Image from 'next/image';
+import { getCategories } from '@/lib/api-requests'
 
 type Props = {
   type: string,
@@ -13,7 +14,7 @@ type Props = {
   product?: ProductInterface
 }
 
-const ProductForm = ({ type, artisan, product }: Props) => {
+const ProductForm = async ({ type, artisan, product }: Props) => {
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -24,11 +25,14 @@ const ProductForm = ({ type, artisan, product }: Props) => {
     image: product?.image || "",
     description: product?.description || "",
     price: product?.price || 0,
+
+    
     category_id: product?.category_id || "",
-    creation_date: product?.creation_date || "" /*new Date().toLocaleDateString()*/,
+    creation_date: product?.creation_date || new Date().toLocaleDateString(),
     sold: product?.sold || false,
-    user_id: product?.user_id || null,
-    buy_date: product?.buy_date || null,
+    user_id: product?.user_id || "",
+    buy_date: product?.buy_date || "",
+    visible: product?.visible || true
   });
 
   const listaCategorias = [{
@@ -43,6 +47,8 @@ const ProductForm = ({ type, artisan, product }: Props) => {
     category_id: '3',
     name: 'Hogar'
   }];
+
+  //const listaCategorias: CategoryInterface[] = await getCategories();
 
   const handleStateChange = (fieldName: keyof FormProductState, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
@@ -78,13 +84,13 @@ const ProductForm = ({ type, artisan, product }: Props) => {
 
     try {
       if (type === "create") {
-        await createNewProduct(form, artisan.user.id)
+        await createNewProduct(form)
 
         router.push("/")
       }
 
       if (type === "edit") {
-        await updateProduct(form, artisan.user.id)
+        await editProduct(form, artisan.user.id)
 
         router.push("/")
       }
@@ -144,12 +150,20 @@ const ProductForm = ({ type, artisan, product }: Props) => {
         setState={(value) => handleStateChange('price', value)}
       />
 
-      <CustomMenu
+      {/*<CustomMenu
         title="Categoria"
         state={form.category_id}
         categories={listaCategorias}
         setState={(value) => handleStateChange('category_id', value)}
-      />
+        />*/}
+      
+      <select onChange={(e) => handleStateChange('category_id', e.target.value)}>
+      {listaCategorias.map((category) => (
+        <option key={category.category_id} value={category.category_id}>
+          {category.name}
+        </option>
+      ))}
+      </select>
 
       <div className="flexStart w-full">
         <Button

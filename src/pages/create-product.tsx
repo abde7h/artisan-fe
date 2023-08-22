@@ -9,6 +9,7 @@ const CreateProduct = () => {
   // const router = useRouter();
 
   // if (!getCookie("userLogged")) router.push("/login");
+  // const userLogged = getUserLogged();
 
   const userLoggedCookie: any = getCookie("userLogged");
   let userLoggedString: string | null = null;
@@ -23,7 +24,7 @@ const CreateProduct = () => {
     //<Modal>
     <>
       <div className="flex items-center flex-col bottom-0">
-        <h3 className="md:text-5xl text-3xl font-extrabold text-left max-w-5xl w-full">Create a New Project</h3>
+        <h3 className="md:text-5xl text-3xl font-extrabold text-left max-w-5xl w-full">Create a New Product</h3>
 
         <ProductForm type="create" artisan={userLogged} />
       </div>

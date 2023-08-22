@@ -1,10 +1,11 @@
-import { createArtisan, createUser, getUser, getArtisan, createProduct } from "./api-requests";
+import { createArtisan, createUser, getUser, getArtisan, createProduct, uploadImage, getProduct, updateProduct, deleteProduct } from "./api-requests";
 import {
   UserCreate,
   UserProfile,
   UserLoggedInterface,
   ArtisanProfile,
   FormProductState,
+  ProductInterface,
 } from "./types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { LoginUserInput, RegisterUserInput } from "./validations/user.schema";
@@ -16,9 +17,7 @@ import {
 } from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function registerUser(
-  credentials: RegisterUserInput
-): Promise<UserProfile> {
+export async function registerUser(credentials: RegisterUserInput): Promise<UserProfile> {
   const { username, email, password, name, surnames, telephone } = credentials;
 
   const newUser: UserCreate = {
@@ -35,9 +34,7 @@ export async function registerUser(
   return await createUser(newUser);
 }
 
-export async function loginUser(
-  credentials: LoginUserInput
-): Promise<{ user?: UserProfile }> {
+export async function loginUser(credentials: LoginUserInput): Promise<{ user?: UserProfile }> {
   const user: { user?: UserProfile } = await getUser(credentials);
   const { user_id, username, email, image } = user as UserProfile;
 
@@ -66,9 +63,7 @@ export async function loginUser(
   return user;
 }
 
-export async function registerArtisan(
-  credentials: RegisterUserInput
-): Promise<ArtisanProfile> {
+export async function registerArtisan(credentials: RegisterUserInput): Promise<ArtisanProfile> {
   const { username, email, password, name, surnames, telephone } = credentials;
 
   const newUser: UserCreate = {
@@ -85,9 +80,7 @@ export async function registerArtisan(
   return await createArtisan(newUser);
 }
 
-export async function loginArtisan(
-  credentials: LoginUserInput
-): Promise<{ user?: ArtisanProfile }> {
+export async function loginArtisan(credentials: LoginUserInput): Promise<{ user?: ArtisanProfile }> {
   const user: { user?: ArtisanProfile } = await getArtisan(credentials);
   const { artisan_id, username, email, image } = user as ArtisanProfile;
 
@@ -116,75 +109,41 @@ export async function loginArtisan(
   return user;
 }
 
-export const getUserLogged = (): string => {
-  const userLoggedCookie = getCookie("userLogged");
-  let userLoggedString: string = "";
-  if (userLoggedCookie) userLoggedString = userLoggedCookie?.toString();
+export const getUserLogged = (): UserLoggedInterface | null => {
+  const userLoggedCookie: any = getCookie("userLogged");
+  let userLoggedString: string | null = null;
+  if (userLoggedCookie)
+    userLoggedString = userLoggedCookie.toString();
 
-  return userLoggedString;
+  let userLogged: UserLoggedInterface | null = null;
+  if (userLoggedString)
+    userLogged = JSON.parse(userLoggedString);
+
+  return userLogged;
 };
 
-export const createNewProduct = async (
-  form: FormProductState,
-  artisanId: string
-) => {
+export const createNewProduct = async (form: FormProductState): Promise<ProductInterface> => {
   console.log(form)
-  //const product = await createProduct(form);
+  const product = await createProduct(form);
 
+  await uploadImage(product);
 
-  //const imageUrl = await uploadImage(form.image);
-
-
-  // if (imageUrl.url) {
-  //   client.setHeader("Authorization", `Bearer ${token}`);
-
-  // const variables = {
-  //   input: {
-  //     ...form,
-  //     image: imageUrl.url,
-  //     createdBy: {
-  //       link: creatorId
-  //     }
-  //   }
-  // };
-
-  //   return makeGraphQLRequest(createProjectMutation, variables);
-  // }
-  //return product;
+  return product;
 };
 
-export const updateProduct = async (form: FormProductState, projectId: string) => {
-  function isBase64DataURL(value: string) {
-    const base64Regex = /^data:image\/[a-z]+;base64,/;
-    return base64Regex.test(value);
-  }
+export const editProduct = async (form: FormProductState, productId: string): Promise<ProductInterface> => {
+  //const product = await getProduct(productId);
+  const updatedProduct = await updateProduct(form, productId);
 
-  let updatedForm = { ...form };
+  await uploadImage(updatedProduct);
 
-  const isUploadingNewImage = isBase64DataURL(form.image);
-
-  if (isUploadingNewImage) {
-    const imageUrl = await uploadImage(form.image);
-
-    if (imageUrl.url) {
-      updatedForm = { ...updatedForm, image: imageUrl.url };
-    }
-  }
-
-  client.setHeader("Authorization", `Bearer ${token}`);
-
-  const variables = {
-    id: projectId,
-    input: updatedForm,
-  };
-
-  return makeGraphQLRequest(updateProjectMutation, variables);
+  return updatedProduct;
 };
 
-
-function uploadImage(image: string) {
-  throw new Error("Function not implemented.");
+export async function removeProduct(productId: string) {
+  await deleteProduct(productId);
 }
+
 // export const deleteProject = (id: string, token: string) => {
 //   client.setHeader("Authorization", `Bearer ${token}`);
 //   return makeGraphQLRequest(deleteProjectMutation, { id });

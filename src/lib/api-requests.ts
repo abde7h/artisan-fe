@@ -126,91 +126,46 @@ export async function getProduct(productId: string): Promise<{ product?: Product
     }
 }
 
-export const uploadImage = async (imagePath: string, productId: string) => {
+export async function updateProduct(updatedProduct: FormProductState, productId: string): Promise<ProductInterface> {
     try {
-      const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${productId}`, {
-        method: "POST",
-        body: JSON.stringify({
-          path: imagePath,
-        }),
-      });
-      return response.json();
-    } catch (err) {
-      throw err;
+        console.log(JSON.stringify(updatedProduct))
+        const response = await fetch(`${SERVER_ENDPOINT}/product/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedProduct),
+        });
+
+        console.log(response.status)
+
+        if (!response.ok) {
+            throw new Error(
+                `Error creating user: ${response.status} ${response.statusText}`
+            );
+        }
+
+        return response.json();
+    } catch (error) {
+        throw error;
     }
-  };
+}
 
-// const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
+export const uploadImage = async (product: ProductInterface) => {
+    try {
+        // const formData = new FormData();
+        // formData.append("file", product.image)
 
-// async function handleResponse<T>(response: Response): Promise<T> {
-//     const contentType = response.headers.get("Content-Type") || "";
-//     const isJson = contentType.includes("application/json");
-//     const data = isJson ? await response.json() : await response.text();
+        const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${product.product_id}`, {
+            method: "POST",
+            body: JSON.stringify(product.image) //formData
+        });
+        return response.json();
+    } catch (err) {
+        throw err;
+    }
+};
 
-//     if (!response.ok) {
-//         if (isJson && data.errors !== null) {
-//             throw new Error(JSON.stringify(data.errors));
-//         }
+export const deleteProduct = async (productId: string) => {
 
-//         throw new Error(data.message || response.statusText);
-//     }
-
-//     return data as T;
-// }
-
-// export async function apiRegisterUser(
-//     credentials: string
-// ): Promise<FilteredUser> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/register`, {
-//         method: "POST",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: credentials,
-//     });
-
-//     return handleResponse<UserResponse>(response).then((data) => data.data.user);
-// }
-
-// export async function apiLoginUser(credentials: string): Promise<string> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/login`, {
-//         method: "POST",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: credentials,
-//     });
-
-//     return handleResponse<UserLoginResponse>(response).then((data) => data.token);
-// }
-
-// export async function apiLogoutUser(): Promise<void> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/logout`, {
-//         method: "GET",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//     });
-
-//     return handleResponse<void>(response);
-// }
-
-// export async function apiGetAuthUser(token?: string): Promise<FilteredUser> {
-//     const headers: Record<string, string> = {
-//         "Content-Type": "application/json",
-//     };
-
-//     if (token) {
-//         headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/users/me`, {
-//         method: "GET",
-//         credentials: "include",
-//         headers,
-//     });
-
-//     return handleResponse<UserResponse>(response).then((data) => data.data.user);
-// }
+}
