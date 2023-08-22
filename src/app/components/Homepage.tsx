@@ -117,7 +117,7 @@ const HomePage: React.FC = () => {
                     <img
                       src={feedItem.artisan.image}
                       alt={feedItem.artisan.username}
-                      className="w-10 h-10 rounded-full shadow-lg mb-2"
+                      className="w-10 h-10 rounded-full shadow-lg mb-2 object-cover"
                     />
                     <span className="text-black text-sm">
                       {feedItem.artisan.username}

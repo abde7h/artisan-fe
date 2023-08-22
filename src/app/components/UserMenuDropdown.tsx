@@ -31,7 +31,7 @@ const UserMenuDropdown = () => {
       >
         <img
           src="http://localhost:8080/images/Aritsan_Web/Logo_Artisan.jpg"
-          style={{ width: 60, height: 60 }}
+          style={{ width: 54, height: 60 }}
           alt="Logo Artisan"
         />
 

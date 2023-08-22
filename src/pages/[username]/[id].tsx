@@ -198,7 +198,7 @@ const ProductDetails: React.FC = () => {
                       <img
                         src={artisan.image}
                         alt={artisan.username}
-                        className="w-14 h-14 rounded-full shadow-lg mb-2"
+                        className="w-14 h-14 rounded-full shadow-lg mb-2 object-cover"
                       />
                       <span className="text-white">{artisan.username}</span>
                     </div>
