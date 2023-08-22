@@ -31,14 +31,14 @@ export default function Navbar() {
   return (
     <nav className="max-w-[1440px] mx-auto flex justify-between items-center sm:px-16 px-6 py-4">
       <Link href="/">
-        <BsIncognito className="w-20 h-8" />
-        {/*<Image src="/" width={100} height={100} alt="Logo Artisan" />*/}
+        <img
+          src="http://localhost:8080/images/Aritsan_Web/Logo_Artisan.jpg"
+          style={{ width: 60, height: 60 }}
+          alt="Logo Artisan"
+        />
       </Link>
       <form className="w-[28rem]" onSubmit={handleSearch}>
-        <Buscador
-          artisan={artisan}
-          setArtisan={setArtisan}
-        />
+        <Buscador artisan={artisan} setArtisan={setArtisan} />
       </form>
       <Link href="/">
         <BsCloudArrowUp className="w-8 h-8" />

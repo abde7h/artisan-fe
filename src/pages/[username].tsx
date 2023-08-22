@@ -4,6 +4,8 @@ import SeguirEditar from "@/app/components/SeguirEditar";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { UserLoggedInterface } from "@/lib/types";
 
 interface Product {
   product_id: number;
@@ -39,13 +41,21 @@ interface UserProfileData extends ArtisanProfile {
 }
 
 function UserProfile() {
-  const router = useRouter();
-  const { username } = router.query;
-  const [showError, setShowError] = useState(false);
+  const userLoggedCookie: any = getCookie("userLogged");
+  let userLoggedString: string | null = null;
+  if (userLoggedCookie) userLoggedString = userLoggedCookie.toString();
 
-  const userIsFollowing = false;
-  const userName = "artesano1";
-  const isArtisan = true;
+  let userLogged: UserLoggedInterface | null = null;
+  if (userLoggedString) userLogged = JSON.parse(userLoggedString);
+
+  const router = useRouter();
+  const [showError, setShowError] = useState(false);
+  const [perfilArtesano, setPerfilArtesano] = useState(true);
+
+  const { username: rawUsername } = router.query;
+
+  // Asegurarte de que username sea una cadena de texto.
+  const username = typeof rawUsername === "string" ? rawUsername : "";
 
   const [artisanProfile, setArtisanProfile] = useState<ArtisanProfile | null>(
     null
@@ -54,16 +64,24 @@ function UserProfile() {
 
   const fetchData = async () => {
     if (username) {
-      const apiUrl = isArtisan
-        ? `http://localhost:8080/1.0.0/artisanProfile/${username}`
-        : `http://localhost:8080/1.0.0/userDTO/${username}`;
+      // Intenta obtener el perfil del artesano
+      let apiUrl = `http://localhost:8080/1.0.0/artisanProfile/${username}`;
       try {
-        const response = await fetch(apiUrl);
+        let response = await fetch(apiUrl);
+
+        // Si no es un artesano, intenta obtener el perfil del usuario
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          apiUrl = `http://localhost:8080/1.0.0/userDTO/${username}`;
+          response = await fetch(apiUrl);
+
+          setPerfilArtesano(false);
+          // Si tampoco es un usuario, lanza un error
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
         }
+
         const data: UserProfileData = await response.json();
-        console.log(data);
         setProfileData(data);
         setShowError(false);
       } catch (error) {
@@ -82,7 +100,7 @@ function UserProfile() {
   return (
     <>
       {profileData ? (
-        isArtisan ? (
+        perfilArtesano ? (
           <div className="flex items-center justify-center mt-12 min-h-screen bg-gray-100">
             <div className="bg-white p-10 rounded-lg shadow-2xl max-w-7xl w-full">
               {/* Cabecera */}
@@ -102,9 +120,21 @@ function UserProfile() {
                     </div>
                     <div className="ml-4">
                       <SeguirEditar
-                        userName={isArtisan ? profileData.username : userName}
-                        artisanName={isArtisan ? profileData.name : userName}
-                        userID={isArtisan ? profileData.artisan_id : 2}
+                        userName={
+                          userLogged?.user.isArtisan
+                            ? profileData.username
+                            : username
+                        }
+                        artisanName={
+                          userLogged?.user.isArtisan
+                            ? profileData.name
+                            : username
+                        }
+                        userID={
+                          userLogged?.user.isArtisan
+                            ? profileData.artisan_id
+                            : 2
+                        }
                         artisanID={profileData.artisan_id}
                         updateFollowers={fetchData}
                       />
@@ -169,9 +199,21 @@ function UserProfile() {
                     </div>
                     <div className="ml-4">
                       <SeguirEditar
-                        userName={isArtisan ? profileData.username : userName}
-                        artisanName={isArtisan ? profileData.name : userName}
-                        userID={isArtisan ? profileData.artisan_id : 1}
+                        userName={
+                          userLogged?.user.isArtisan
+                            ? profileData.username
+                            : username
+                        }
+                        artisanName={
+                          userLogged?.user.isArtisan
+                            ? profileData.name
+                            : username
+                        }
+                        userID={
+                          userLogged?.user.isArtisan
+                            ? profileData.artisan_id
+                            : 1
+                        }
                         artisanID={profileData.artisan_id}
                         updateFollowers={fetchData}
                       />

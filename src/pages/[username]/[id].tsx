@@ -1,5 +1,7 @@
 import Loader from "@/app/components/Loader";
 import NotFound from "@/app/components/NotFound";
+import { UserLoggedInterface } from "@/lib/types";
+import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -30,13 +32,17 @@ interface ArtisanProfile {
 }
 
 const ProductDetails: React.FC = () => {
+  const userLoggedCookie: any = getCookie("userLogged");
+  let userLoggedString: string | null = null;
+  if (userLoggedCookie) userLoggedString = userLoggedCookie.toString();
+
+  let userLogged: UserLoggedInterface | null = null;
+  if (userLoggedString) userLogged = JSON.parse(userLoggedString);
+
   const router = useRouter();
   const pathSegments = router.asPath.split("/");
   const username = pathSegments[1];
   const productId = pathSegments[2];
-
-  //Constante falsa del userID
-  const userID = 1;
 
   const [product, setProduct] = useState<Product | null>(null);
   const [artisan, setArtisan] = useState<ArtisanProfile | null>(null);
@@ -74,12 +80,12 @@ const ProductDetails: React.FC = () => {
   const handleLikeToggle = async () => {
     // Dependiendo del estado actual, determina qué endpoint y método llamar
     const endpoint = liked
-      ? `http://localhost:8080/1.0.0/likes/delete/${userID}/${product?.product_id}`
+      ? `http://localhost:8080/1.0.0/likes/delete/${userLogged?.user.id}/${product?.product_id}`
       : "http://localhost:8080/1.0.0/likes/add";
     const method = liked ? "DELETE" : "POST";
     const body = liked
       ? null
-      : JSON.stringify({ user_id: userID, product_id: product?.product_id });
+      : JSON.stringify({ user_id: userLogged?.user.id, product_id: product?.product_id });
 
     try {
       // Llama al endpoint con fetch
@@ -109,7 +115,7 @@ const ProductDetails: React.FC = () => {
   const checkIfLiked = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/1.0.0/likes/${userID}/${productId}`
+        `http://localhost:8080/1.0.0/likes/${userLogged?.user.id}/${productId}`
       );
 
       if (response.status === 404) {
