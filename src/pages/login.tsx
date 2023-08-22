@@ -30,9 +30,6 @@ const LoginPage = () => {
                     <button onClick={toggleActive} className={"w-1/3 py-3 font-semibold rounded-2xl outline-none border-none flex justify-center text-white bg-primario"}>
                         Tipo {isArtisan ? "Artesano" : "Usuario"}
                     </button>
-                    <Link href="/create-product">
-                        <Button title='Share work' />
-                    </Link>
                 </nav>
             </header>
 

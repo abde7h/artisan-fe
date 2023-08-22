@@ -64,7 +64,6 @@ export interface ProductInterface {
 }
 
 export type FormProductState = {
-    //product_id: string;
     artisan_id: string;
     name: string;
     image: string;

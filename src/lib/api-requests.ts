@@ -151,15 +151,17 @@ export async function updateProduct(updatedProduct: FormProductState, productId:
     }
 }
 
-export const uploadImage = async (product: ProductInterface) => {
+export const uploadImage = async (imagenData: File | null) => {
     try {
-        // const formData = new FormData();
-        // formData.append("file", product.image)
+        const formData = new FormData();
+        //if (imagenData)
+            formData.append("file", imagenData?.toString());
 
         const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${product.product_id}`, {
             method: "POST",
-            body: JSON.stringify(product.image) //formData
+            body: formData
         });
+        console.log(response)
         return response.json();
     } catch (err) {
         throw err;

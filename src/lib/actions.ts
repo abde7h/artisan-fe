@@ -1,4 +1,14 @@
-import { createArtisan, createUser, getUser, getArtisan, createProduct, uploadImage, getProduct, updateProduct, deleteProduct } from "./api-requests";
+import {
+  createArtisan,
+  createUser,
+  getUser,
+  getArtisan,
+  createProduct,
+  uploadImage,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+} from "./api-requests";
 import {
   UserCreate,
   UserProfile,
@@ -17,7 +27,9 @@ import {
 } from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function registerUser(credentials: RegisterUserInput): Promise<UserProfile> {
+export async function registerUser(
+  credentials: RegisterUserInput
+): Promise<UserProfile> {
   const { username, email, password, name, surnames, telephone } = credentials;
 
   const newUser: UserCreate = {
@@ -34,7 +46,9 @@ export async function registerUser(credentials: RegisterUserInput): Promise<User
   return await createUser(newUser);
 }
 
-export async function loginUser(credentials: LoginUserInput): Promise<{ user?: UserProfile }> {
+export async function loginUser(
+  credentials: LoginUserInput
+): Promise<{ user?: UserProfile }> {
   const user: { user?: UserProfile } = await getUser(credentials);
   const { user_id, username, email, image } = user as UserProfile;
 
@@ -63,7 +77,9 @@ export async function loginUser(credentials: LoginUserInput): Promise<{ user?: U
   return user;
 }
 
-export async function registerArtisan(credentials: RegisterUserInput): Promise<ArtisanProfile> {
+export async function registerArtisan(
+  credentials: RegisterUserInput
+): Promise<ArtisanProfile> {
   const { username, email, password, name, surnames, telephone } = credentials;
 
   const newUser: UserCreate = {
@@ -80,7 +96,9 @@ export async function registerArtisan(credentials: RegisterUserInput): Promise<A
   return await createArtisan(newUser);
 }
 
-export async function loginArtisan(credentials: LoginUserInput): Promise<{ user?: ArtisanProfile }> {
+export async function loginArtisan(
+  credentials: LoginUserInput
+): Promise<{ user?: ArtisanProfile }> {
   const user: { user?: ArtisanProfile } = await getArtisan(credentials);
   const { artisan_id, username, email, image } = user as ArtisanProfile;
 
@@ -112,26 +130,53 @@ export async function loginArtisan(credentials: LoginUserInput): Promise<{ user?
 export const getUserLogged = (): UserLoggedInterface | null => {
   const userLoggedCookie: any = getCookie("userLogged");
   let userLoggedString: string | null = null;
-  if (userLoggedCookie)
-    userLoggedString = userLoggedCookie.toString();
+  if (userLoggedCookie) userLoggedString = userLoggedCookie.toString();
 
   let userLogged: UserLoggedInterface | null = null;
-  if (userLoggedString)
-    userLogged = JSON.parse(userLoggedString);
+  if (userLoggedString) userLogged = JSON.parse(userLoggedString);
 
   return userLogged;
 };
 
-export const createNewProduct = async (form: FormProductState): Promise<ProductInterface> => {
-  console.log(form)
-  const product = await createProduct(form);
+export const createNewProduct = async (form: FormProductState, imagenData: File | null): Promise<ProductInterface> => {
+  const {
+    artisan_id,
+    name,
+    description,
+    price,
+    category_id,
+    creation_date,
+    sold,
+    user_id,
+    buy_date,
+    visible,
+  } = form as FormProductState;
 
-  await uploadImage(product);
+  const productoSinImagen: FormProductState = {
+    artisan_id,
+    name,
+    image: "",
+    description,
+    price,
+    category_id,
+    creation_date,
+    sold,
+    user_id,
+    buy_date,
+    visible
+  };
+  //console.log(productProb);
+  const producto = await createProduct(productoSinImagen);
+  console.log(producto);
+  await uploadImage(imagenData);
 
-  return product;
+  return producto;
 };
 
-export const editProduct = async (form: FormProductState, productId: string): Promise<ProductInterface> => {
+export const editProduct = async (
+  form: FormProductState,
+  productId: string
+): Promise<ProductInterface> => {
   //const product = await getProduct(productId);
   const updatedProduct = await updateProduct(form, productId);
 

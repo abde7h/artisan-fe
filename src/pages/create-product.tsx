@@ -25,8 +25,9 @@ const CreateProduct = () => {
     <>
       <div className="flex items-center flex-col bottom-0">
         <h3 className="md:text-5xl text-3xl font-extrabold text-left max-w-5xl w-full">Create a New Product</h3>
-
-        <ProductForm type="create" artisan={userLogged} />
+        {userLogged && (
+          <ProductForm type="create" artisan={userLogged} />
+        )}
       </div>
     </>
     //</Modal>

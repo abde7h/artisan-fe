@@ -6,18 +6,19 @@ import FormField from './FormField'
 import CustomMenu from './create-product/CustomMenu'
 import Button from './Button'
 import Image from 'next/image';
-import { getCategories } from '@/lib/api-requests'
+import { getCategories, uploadImage } from '@/lib/api-requests'
 
 type Props = {
   type: string,
-  artisan: any,
+  artisan: UserLoggedInterface,
   product?: ProductInterface
 }
 
-const ProductForm = async ({ type, artisan, product }: Props) => {
+const ProductForm = ({ type, artisan, product }: Props) => {
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [imagenData, setImagenData] = useState<File | null>(null);
 
   const [form, setForm] = useState<FormProductState>({
     artisan_id: artisan?.user?.id,
@@ -28,25 +29,25 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
     category_id: product?.category_id || "",
     creation_date: product?.creation_date || new Date().toLocaleDateString(),
     sold: product?.sold || false,
-    user_id: product?.user_id || "",
-    buy_date: product?.buy_date || "",
-    visible: product?.visible || true,
+    user_id: product?.user_id || null,
+    buy_date: product?.buy_date || null,
+    visible: product?.visible || true
   });
 
-  // const listaCategorias = [{
-  //   category_id: '1',
-  //   name: 'Electrónica'
-  // },
-  // {
-  //   category_id: '2',
-  //   name: 'Ropa'
-  // },
-  // {
-  //   category_id: '3',
-  //   name: 'Hogar'
-  // }];
+  const listaCategorias = [{
+    category_id: '1',
+    name: 'Electrónica'
+  },
+  {
+    category_id: '2',
+    name: 'Ropa'
+  },
+  {
+    category_id: '3',
+    name: 'Hogar'
+  }];
 
-  const listaCategorias = await getCategories();
+  //const listaCategorias = await getCategories();
 
   const handleStateChange = (fieldName: keyof FormProductState, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
@@ -68,6 +69,7 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
+    setImagenData(file);
 
     reader.onload = () => {
       const result = reader.result as string;
@@ -82,7 +84,7 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
 
     try {
       if (type === "create") {
-        await createNewProduct(form)
+        await createNewProduct(form, imagenData)
 
         router.push("/")
       }
@@ -125,6 +127,13 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
         )}
       </div>
 
+      {/*<FormField
+        title="Imagen"
+        state={form.image}
+        placeholder="Imagen"
+        setState={(value) => handleStateChange('image', value)}
+      />*/}
+
       <FormField
         title="Nombre"
         state={form.name}
@@ -156,9 +165,9 @@ const ProductForm = async ({ type, artisan, product }: Props) => {
         />*/}
 
       <select onChange={(e) => handleStateChange('category_id', e.target.value)}>
-        {listaCategorias.map((category) => (
-          <option key={category.category_id} value={category.category_id}>
-            {category.name}
+        {listaCategorias.map((categoria) => (
+          <option key={categoria.category_id} value={categoria.category_id}>
+            {categoria.name}
           </option>
         ))}
       </select>
