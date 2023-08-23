@@ -60,7 +60,7 @@ export default function UserLoginForm() {
         <FormProvider {...methods}>
             <form
                 onSubmit={handleSubmit(onSubmitHandler)}
-                className="max-w-md w-full h-fit self-center mx-auto overflow-hidden shadow-lg bg-secundario rounded-2xl p-8 space-y-5"
+                className="max-w-md w-full h-fit self-center mx-auto rounded overflow-hidden shadow-lg bg-white p-8 space-y-5"
             >
                 <FormInput label="Correo electrónico" name="email" type="email" />
                 <FormInput label="Contraseña" name="password" type="password" />
@@ -72,7 +72,7 @@ export default function UserLoginForm() {
                 </LoadingButton>
                 <span className="block">
                     ¿Necesitas una cuenta?{" "}
-                    <Link href="/register" className="bg-amber-900">
+                    <Link href="/register" className="text-amber-900 hover:text-amber-800">
                         Registrarse
                     </Link>
                 </span>

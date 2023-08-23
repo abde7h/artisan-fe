@@ -22,13 +22,13 @@ const FormInput: React.FC<FormInputProps> = ({
     } = useFormContext();
     return (
         <div className="mb-4">
-            <label htmlFor={name} className="block text-sm font-bold mb-3">
+            <label htmlFor={name} className="block text-sm font-bold mb-2">
                 {label}
             </label>
             <input
                 type={type}
                 placeholder=" "
-                className="block w-full rounded-xl shadow appearance-none focus:outline-none focus:border-primario py-2 px-3 border border-black"
+                className="block w-full rounded shadow appearance-none py-2 px-3 border border-black"
                 {...register(name)}
                 style={inputStyles}
             />

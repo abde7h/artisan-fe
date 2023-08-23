@@ -5,7 +5,6 @@ import {
   getArtisan,
   createProduct,
   uploadImage,
-  getProduct,
   updateProduct,
   deleteProduct,
 } from "./api-requests";
@@ -17,15 +16,11 @@ import {
   FormProductState,
   ProductInterface,
 } from "./types";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { LoginUserInput, RegisterUserInput } from "./validations/user.schema";
 import {
   getCookie,
-  setCookie,
-  deleteCookie,
-  CookieValueTypes,
+  setCookie
 } from "cookies-next";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export async function registerUser(
   credentials: RegisterUserInput
@@ -61,16 +56,6 @@ export async function loginUser(
       image,
     },
   };
-
-  // const userLogged: UserLoggedInterface = {
-  //   user: {
-  //     id: "1",
-  //     username: "diego",
-  //     email: "email",
-  //     isArtisan: false,
-  //     image: "imagendiego",
-  //   },
-  // };
 
   setCookie("userLogged", JSON.stringify(userLogged));
 
@@ -111,16 +96,6 @@ export async function loginArtisan(
       image,
     },
   };
-
-  // const userLogged: UserLoggedInterface = {
-  //   user: {
-  //     id: "1",
-  //     username: "diego",
-  //     email: "email",
-  //     isArtisan: true,
-  //     image: "imagendiego",
-  //   },
-  // };
 
   setCookie("userLogged", JSON.stringify(userLogged));
 

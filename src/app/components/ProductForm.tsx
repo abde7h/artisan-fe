@@ -27,33 +27,31 @@ const ProductForm = ({ type, artisan, product }: Props) => {
     description: product?.description || "",
     price: product?.price || 0,
     category_id: product?.category_id || "",
-    creation_date: product?.creation_date || new Date().toLocaleDateString(),
+    creation_date: product?.creation_date || new Date().toISOString().substring(0, 10),
     sold: product?.sold || false,
     user_id: product?.user_id || null,
     buy_date: product?.buy_date || null,
     visible: product?.visible || true
   });
 
-  let listaCategorias = [{
-    category_id: '1',
-    name: 'Electrónica'
-  },
-  {
-    category_id: '2',
-    name: 'Ropa'
-  },
-  {
-    category_id: '3',
-    name: 'Hogar'
-  }];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      listaCategorias = await getCategories(); 
-    };
-
-    fetchData();
-  }, []);
+  let listaCategorias = [
+    {
+      category_id: "1",
+      name: "Muebles de madera"
+    },
+    {
+      category_id: "2",
+      name: "Arte en cerámica"
+    },
+    {
+      category_id: "3",
+      name: "Esculturas en metal"
+    },
+    {
+      category_id: "4",
+      name: "Tejidos hechos a mano"
+    }
+  ]
 
   const handleStateChange = (fieldName: keyof FormProductState, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
@@ -109,7 +107,7 @@ const ProductForm = ({ type, artisan, product }: Props) => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100"> 
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-full sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2">
         <h1 className="text-2xl font-bold mb-4 text-center">Subir Producto</h1>
         <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -128,15 +126,15 @@ const ProductForm = ({ type, artisan, product }: Props) => {
           <FormField
             title="Nombre"
             state={form.name}
-            placeholder="Nombre"
+            placeholder="Mesa de ..."
             setState={(value) => handleStateChange('name', value)}
           />
 
           <FormField
             title='Descripción'
             state={form.description}
-            placeholder="Showcase and discover remarkable developer projects."
             isTextArea
+            placeholder="Es una mesa de ..."
             setState={(value) => handleStateChange('description', value)}
           />
 
@@ -144,7 +142,6 @@ const ProductForm = ({ type, artisan, product }: Props) => {
             type="number"
             title="Precio"
             state={form.price}
-            //placeholder="https://jsmastery.pro"
             setState={(value) => handleStateChange('price', value)}
           />
 
@@ -161,7 +158,7 @@ const ProductForm = ({ type, artisan, product }: Props) => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white rounded p-2 w-full hover:bg-blue-600"
+            className="bg-amber-900 text-white rounded p-2 w-full hover:bg-amber-800"
           >{`${type === "create" ? "Subir Producto" : "Editar Producto"}`}</button>
         </form>
       </div>

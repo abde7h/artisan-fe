@@ -30,13 +30,13 @@ const FormInputDoble: React.FC<FormInputProps> = ({
         <div className="mb-4">
             <div className="grid grid-flow-row sm:grid-flow-col gap-3">
                 <div className="sm:col-span-4 justify-center">
-                    <label htmlFor={nameUno} className="block text-sm font-bold mb-3">
+                    <label htmlFor={nameUno} className="block text-sm font-bold mb-2">
                         {labelUno}
                     </label>
                     <input
                         type={typeUno}
                         placeholder=" "
-                        className="block w-full rounded-xl shadow appearance-none focus:outline-none focus:border-primario py-2 px-3 border border-black"
+                        className="block w-full rounded shadow appearance-none py-2 px-3 border border-black"
                         {...register(nameUno)}
                         style={inputStyles}
                     />
@@ -48,13 +48,13 @@ const FormInputDoble: React.FC<FormInputProps> = ({
                 </div>
 
                 <div className="sm:col-span-4 justify-center">
-                    <label htmlFor={nameDos} className="block text-sm font-bold mb-3">
+                    <label htmlFor={nameDos} className="block text-sm font-bold mb-2">
                         {labelDos}
                     </label>
                     <input
                         type={typeDos}
                         placeholder=" "
-                        className="block w-full rounded-xl shadow appearance-none focus:outline-none focus:border-primario py-2 px-3 border border-black"
+                        className="block w-full rounded shadow appearance-none py-2 px-3 border border-black"
                         {...register(nameDos)}
                         style={inputStyles}
                     />

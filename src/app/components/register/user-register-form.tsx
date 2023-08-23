@@ -61,7 +61,7 @@ export default function UserRegisterForm() {
         <FormProvider {...methods}>
             <form
                 onSubmit={handleSubmit(onSubmitHandler)}
-                className="max-w-md w-full h-fit self-center mx-auto overflow-hidden shadow-lg bg-secundario rounded-2xl p-8 space-y-5"
+                className="max-w-md w-full h-fit self-center mx-auto overflow-hidden shadow-lg bg-white rounded p-8 space-y-5"
             >
                 <FormInputDoble labelUno="Nombre" nameUno="name" labelDos="Apellidos" nameDos="surnames" />
                 <FormInput label="Nombre de usuario" name="username" />
@@ -70,7 +70,7 @@ export default function UserRegisterForm() {
                 <FormInput label="Número de teléfono" name="telephone" type="telephone" />
                 <span className="block">
                     ¿Ya tienes una cuenta?{" "}
-                    <Link href="/login" className="bg-amber-900">
+                    <Link href="/login" className="text-amber-900 hover:text-amber-800">
                         Iniciar sesión
                     </Link>
                 </span>

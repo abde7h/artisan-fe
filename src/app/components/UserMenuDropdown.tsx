@@ -2,13 +2,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { MdArrowDropDownCircle } from "react-icons/md";
 import Image from "next/image";
-import { getCookie } from "cookies-next";
 import { UserLoggedInterface } from "@/lib/types";
 import {
   getCookie,
-  setCookie,
   deleteCookie,
-  CookieValueTypes,
 } from "cookies-next";
 import { useRouter } from "next/navigation";
 

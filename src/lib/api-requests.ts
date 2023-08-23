@@ -92,7 +92,6 @@ export async function getCategories(): Promise<CategoryInterface[]> {
 
 export async function createProduct(newProduct: FormProductState): Promise<ProductInterface> {
     try {
-        console.log(JSON.stringify(newProduct))
         const response = await fetch(`${SERVER_ENDPOINT}/product/add`, {
             method: "POST",
             headers: {
