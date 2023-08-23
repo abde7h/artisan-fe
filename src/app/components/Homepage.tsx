@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FeedItem } from "./interfaces";
 import Loader from "./Loader";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { UserLoggedInterface } from "@/lib/types";
 
 const HomePage: React.FC = () => {
+  const userLoggedCookie: any = getCookie("userLogged");
+  let userLoggedString: string | null = null;
+  if (userLoggedCookie) userLoggedString = userLoggedCookie.toString();
+
+  let userLogged: UserLoggedInterface | null = null;
+  if (userLoggedString) userLogged = JSON.parse(userLoggedString);
+
   const [feedData, setFeedData] = useState<FeedItem[]>([]);
   const [followingArtisans, setFollowingArtisans] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +26,7 @@ const HomePage: React.FC = () => {
         return response.json();
       })
       .then((data: FeedItem[]) => {
+        console.log(data);
         setFeedData(data);
       })
       .catch((error) => console.error("Error al obtener el feed:", error))
@@ -24,7 +34,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/1.0.0/alex1985/following")
+    fetch(`http://localhost:8080/1.0.0/${userLogged?.user.username}/following`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok for following");
@@ -35,6 +45,7 @@ const HomePage: React.FC = () => {
         const usernames = data.map(
           (item: { username: string }) => item.username
         );
+        console.log("usernames" ,data);
         setFollowingArtisans(usernames);
       })
       .catch((error) =>
@@ -99,7 +110,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="grid grid-cols-5 gap-6 m-2">
-      {feedData.length && followingArtisans.length
+      {feedData.length
         ? prioritizeFollowedArtisans(feedData, followingArtisans).map(
             (feedItem) => (
               <div className="relative" key={feedItem.name}>

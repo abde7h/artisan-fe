@@ -56,6 +56,11 @@ function UserProfile() {
 
   // Asegurarte de que username sea una cadena de texto.
   const username = typeof rawUsername === "string" ? rawUsername : "";
+  let userId: number = 0; // valor predeterminado
+
+  if (userLogged?.user.id !== undefined) {
+    userId = +userLogged.user.id; // convierte a número
+  }
 
   const [artisanProfile, setArtisanProfile] = useState<ArtisanProfile | null>(
     null
@@ -133,7 +138,7 @@ function UserProfile() {
                         userID={
                           userLogged?.user.isArtisan
                             ? profileData.artisan_id
-                            : 2
+                            : userId
                         }
                         artisanID={profileData.artisan_id}
                         updateFollowers={fetchData}
