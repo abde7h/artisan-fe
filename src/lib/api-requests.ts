@@ -101,8 +101,6 @@ export async function createProduct(newProduct: FormProductState): Promise<Produ
             body: JSON.stringify(newProduct),
         });
 
-        console.log(response.status)
-
         if (!response.ok) {
             throw new Error(
                 `Error creating user: ${response.status} ${response.statusText}`
@@ -151,18 +149,17 @@ export async function updateProduct(updatedProduct: FormProductState, productId:
     }
 }
 
-export const uploadImage = async (imagenData: File | null) => {
+export const uploadImage = async (imagenData: File | null, productId: string) => {
     try {
         const formData = new FormData();
-        //if (imagenData)
-            formData.append("file", imagenData?.toString());
+        if (imagenData)
+            formData.append("file", imagenData);
 
-        const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${product.product_id}`, {
+        const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${productId}`, {
             method: "POST",
             body: formData
         });
-        console.log(response)
-        return response.json();
+        return response;
     } catch (err) {
         throw err;
     }

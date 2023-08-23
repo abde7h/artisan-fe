@@ -40,7 +40,7 @@ export default function Navbar() {
           setArtisan={setArtisan}
         />
       </form>
-      <Link href="/">
+      <Link href="/create-product">
         <BsCloudArrowUp className="w-8 h-8" />
       </Link>
       {/*

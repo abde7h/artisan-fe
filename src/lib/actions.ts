@@ -165,10 +165,9 @@ export const createNewProduct = async (form: FormProductState, imagenData: File 
     buy_date,
     visible
   };
-  //console.log(productProb);
+
   const producto = await createProduct(productoSinImagen);
-  console.log(producto);
-  await uploadImage(imagenData);
+  await uploadImage(imagenData, producto.product_id);
 
   return producto;
 };
@@ -180,7 +179,7 @@ export const editProduct = async (
   //const product = await getProduct(productId);
   const updatedProduct = await updateProduct(form, productId);
 
-  await uploadImage(updatedProduct);
+  //await uploadImage(updatedProduct);
 
   return updatedProduct;
 };
