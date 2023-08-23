@@ -72,7 +72,7 @@ export default function UserLoginForm() {
                 </LoadingButton>
                 <span className="block">
                     ¿Necesitas una cuenta?{" "}
-                    <Link href="/register" className="text-yellow-900">
+                    <Link href="/register" className="bg-amber-900">
                         Registrarse
                     </Link>
                 </span>

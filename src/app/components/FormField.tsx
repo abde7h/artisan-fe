@@ -9,14 +9,14 @@ type Props = {
 
 const FormField = ({ type, title, state, placeholder, isTextArea, setState }: Props) => {
     return (
-        <div className="flex items-center justify-start flex-col w-full gap-4">
-            <label className="w-full text-gray-[#3d3d4e]">{title}</label>
+        <div>
+            <label className="block font-medium">{title}</label>
 
             {isTextArea ? (
                 <textarea
                     placeholder={placeholder}
                     value={state}
-                    className="w-full outline-0 bg-indigo-300 rounded-xl p-4"
+                    className="border rounded p-2 w-full"
                     onChange={(e) => setState(e.target.value)}
                 />
             ) : (
@@ -25,7 +25,7 @@ const FormField = ({ type, title, state, placeholder, isTextArea, setState }: Pr
                     placeholder={placeholder}
                     required
                     value={state}
-                    className="w-full outline-0 bg-indigo-300 rounded-xl p-4"
+                    className="border rounded p-2 w-full"
                     onChange={(e) => setState(e.target.value)}
                 />
             )}

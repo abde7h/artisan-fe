@@ -60,10 +60,10 @@ export interface ProductInterface {
     sold: boolean;
     user_id: string | null;
     buy_date: string | null;
+    visible: boolean | null;
 }
 
 export type FormProductState = {
-    //product_id: string;
     artisan_id: string;
     name: string;
     image: string;
@@ -74,6 +74,7 @@ export type FormProductState = {
     sold: boolean;
     user_id: string | null;
     buy_date: string | null;
+    visible: boolean | null;
 };
 
 // export interface UserResponse {
