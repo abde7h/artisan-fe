@@ -70,7 +70,7 @@ export default function UserRegisterForm() {
                 <FormInput label="Número de teléfono" name="telephone" type="telephone" />
                 <span className="block">
                     ¿Ya tienes una cuenta?{" "}
-                    <Link href="/login" className="text-yellow-900">
+                    <Link href="/login" className="bg-amber-900">
                         Iniciar sesión
                     </Link>
                 </span>
