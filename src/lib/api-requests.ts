@@ -1,4 +1,4 @@
-import { UserProfile, UserCreate, ArtisanProfile, CategoryInterface } from "./types";
+import { UserProfile, UserCreate, ArtisanProfile, CategoryInterface, ProductInterface, FormProductState } from "./types";
 import { LoginUserInput } from "./validations/user.schema";
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:8080/1.0.0";
@@ -8,7 +8,7 @@ const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:8080/1.
 export async function createUser(newUser: UserCreate): Promise<UserProfile> {
     try {
         console.log(JSON.stringify(newUser))
-        const response = await fetch(`http://localhost:8080/1.0.0/user/add`, {
+        const response = await fetch(`${SERVER_ENDPOINT}/user/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export async function getUser(credentials: LoginUserInput): Promise<{ user?: Use
 export async function createArtisan(newUser: UserCreate): Promise<ArtisanProfile> {
     try {
         console.log(JSON.stringify(newUser))
-        const response = await fetch(`http://localhost:8080/1.0.0/artisan/add`, {
+        const response = await fetch(`${SERVER_ENDPOINT}/artisan/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -90,77 +90,81 @@ export async function getCategories(): Promise<CategoryInterface[]> {
     }
 }
 
-// const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
+export async function createProduct(newProduct: FormProductState): Promise<ProductInterface> {
+    try {
+        console.log(JSON.stringify(newProduct))
+        const response = await fetch(`${SERVER_ENDPOINT}/product/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newProduct),
+        });
 
-// async function handleResponse<T>(response: Response): Promise<T> {
-//     const contentType = response.headers.get("Content-Type") || "";
-//     const isJson = contentType.includes("application/json");
-//     const data = isJson ? await response.json() : await response.text();
+        if (!response.ok) {
+            throw new Error(
+                `Error creating user: ${response.status} ${response.statusText}`
+            );
+        }
 
-//     if (!response.ok) {
-//         if (isJson && data.errors !== null) {
-//             throw new Error(JSON.stringify(data.errors));
-//         }
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
+}
 
-//         throw new Error(data.message || response.statusText);
-//     }
+export async function getProduct(productId: string): Promise<{ product?: ProductInterface }> {
+    try {
+        const response = await fetch(`${SERVER_ENDPOINT}/product/${productId}`);
 
-//     return data as T;
-// }
+        const data = await response.json();
+        return data as { product?: ProductInterface };
+    } catch (error) {
+        throw error;
+    }
+}
 
-// export async function apiRegisterUser(
-//     credentials: string
-// ): Promise<FilteredUser> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/register`, {
-//         method: "POST",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: credentials,
-//     });
+export async function updateProduct(updatedProduct: FormProductState, productId: string): Promise<ProductInterface> {
+    try {
+        console.log(JSON.stringify(updatedProduct))
+        const response = await fetch(`${SERVER_ENDPOINT}/product/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedProduct),
+        });
 
-//     return handleResponse<UserResponse>(response).then((data) => data.data.user);
-// }
+        console.log(response.status)
 
-// export async function apiLoginUser(credentials: string): Promise<string> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/login`, {
-//         method: "POST",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: credentials,
-//     });
+        if (!response.ok) {
+            throw new Error(
+                `Error creating user: ${response.status} ${response.statusText}`
+            );
+        }
 
-//     return handleResponse<UserLoginResponse>(response).then((data) => data.token);
-// }
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
+}
 
-// export async function apiLogoutUser(): Promise<void> {
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/auth/logout`, {
-//         method: "GET",
-//         credentials: "include",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//     });
+export const uploadImage = async (imagenData: File | null, productId: string) => {
+    try {
+        const formData = new FormData();
+        if (imagenData)
+            formData.append("file", imagenData);
 
-//     return handleResponse<void>(response);
-// }
+        const response = await fetch(`${SERVER_ENDPOINT}/product/photo/upload/${productId}`, {
+            method: "POST",
+            body: formData
+        });
+        return response;
+    } catch (err) {
+        throw err;
+    }
+};
 
-// export async function apiGetAuthUser(token?: string): Promise<FilteredUser> {
-//     const headers: Record<string, string> = {
-//         "Content-Type": "application/json",
-//     };
+export const deleteProduct = async (productId: string) => {
 
-//     if (token) {
-//         headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     const response = await fetch(`${SERVER_ENDPOINT}/api/users/me`, {
-//         method: "GET",
-//         credentials: "include",
-//         headers,
-//     });
-
-//     return handleResponse<UserResponse>(response).then((data) => data.data.user);
-// }
+}

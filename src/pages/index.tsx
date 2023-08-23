@@ -3,6 +3,8 @@ import React from 'react'
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import { AuthPageInvisible } from '@/lib/protect-page';
+import Link from 'next/link';
+import Button from '@/app/components/Button';
 
 const index = () => {
   const router = useRouter();
@@ -10,7 +12,11 @@ const index = () => {
   // if (!getCookie("userLogged")) router.push("/login");
 
   return (
-    <HomePage />
+    <div>
+      <HomePage />
+      
+      <AuthPageInvisible />
+    </div>
   )
 }
 

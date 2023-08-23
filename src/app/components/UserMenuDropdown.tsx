@@ -4,6 +4,13 @@ import { MdArrowDropDownCircle } from "react-icons/md";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
 import { UserLoggedInterface } from "@/lib/types";
+import {
+  getCookie,
+  setCookie,
+  deleteCookie,
+  CookieValueTypes,
+} from "cookies-next";
+import { useRouter } from "next/navigation";
 
 const UserMenuDropdown = () => {
   const userLoggedCookie: any = getCookie("userLogged");
@@ -14,6 +21,7 @@ const UserMenuDropdown = () => {
   if (userLoggedString) userLogged = JSON.parse(userLoggedString);
 
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -22,6 +30,12 @@ const UserMenuDropdown = () => {
   const closeMenu = () => {
     setMenuOpen(false);
   };
+
+  const cerrarSession = () => {
+    deleteCookie("userLogged")
+    closeMenu();
+    if (!getCookie("userLogged")) router.push("/login");
+  }
 
   return (
     <div style={{ display: isMenuOpen ? "relative" : "inline-block" }}>
@@ -60,13 +74,7 @@ const UserMenuDropdown = () => {
           >
             Mi perfil
           </Link>
-          <Link
-            href="/logout"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-            onClick={closeMenu}
-          >
-            Cerrar sesión
-          </Link>
+          <button className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={cerrarSession}>Cerrar sesión</button>
         </div>
       )}
     </div>
