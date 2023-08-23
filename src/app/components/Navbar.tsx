@@ -40,7 +40,7 @@ export default function Navbar() {
       <form className="w-[28rem]" onSubmit={handleSearch}>
         <Buscador artisan={artisan} setArtisan={setArtisan} />
       </form>
-      <Link href="/">
+      <Link href="/create-product">
         <BsCloudArrowUp className="w-8 h-8" />
       </Link>
       {/*

@@ -58,7 +58,7 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
             displayValue={(item: string) => item}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Busca un artesano..."
-            className="rounded-full bg-gray-200 h-12 w-full"
+            className="rounded-full bg-gray-200 h-12 w-full z-10"
           />
           <Transition
             as={Fragment}
@@ -68,7 +68,7 @@ const SearchManufacturer = ({ artisan, setArtisan }: BuscadorPerfilesProps) => {
             afterLeave={() => setQuery("")}
           >
             <Combobox.Options
-              className="absolute mt-1 max-h-80 w-[27.5rem] overflow-auto rounded-md bg-white py-1 text-base shadow-lg focus:outline-none sm:text-sm"
+              className=" z-10 absolute mt-1 max-h-80 w-[27.5rem] overflow-auto rounded-md bg-white py-1 text-base shadow-lg focus:outline-none sm:text-sm"
               static
             >
               {filteredArtisans.map((artisan) => (

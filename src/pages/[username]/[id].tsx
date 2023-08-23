@@ -85,7 +85,10 @@ const ProductDetails: React.FC = () => {
     const method = liked ? "DELETE" : "POST";
     const body = liked
       ? null
-      : JSON.stringify({ user_id: userLogged?.user.id, product_id: product?.product_id });
+      : JSON.stringify({
+          user_id: userLogged?.user.id,
+          product_id: product?.product_id,
+        });
 
     try {
       // Llama al endpoint con fetch
@@ -211,15 +214,17 @@ const ProductDetails: React.FC = () => {
                 </span>
 
                 {/* Botón de Like */}
-                <button
-                  onClick={handleLikeToggle}
-                  className="absolute bottom-4 left-56 bg-black bg-opacity-50 text-white p-3 rounded-lg focus:outline-none flex items-center"
-                >
-                  {liked ? <HeartFull /> : <HeartEmpty />}
-                  <span className="ml-2">
-                    {liked ? "No me gusta" : "Me gusta"}
-                  </span>
-                </button>
+                {!userLogged?.user.isArtisan && (
+                  <button
+                    onClick={handleLikeToggle}
+                    className="absolute bottom-4 left-56 bg-black bg-opacity-50 text-white p-3 rounded-lg focus:outline-none flex items-center"
+                  >
+                    {liked ? <HeartFull /> : <HeartEmpty />}
+                    <span className="ml-2">
+                      {liked ? "No me gusta" : "Me gusta"}
+                    </span>
+                  </button>
+                )}
               </div>
 
               {/* Descripción del producto */}

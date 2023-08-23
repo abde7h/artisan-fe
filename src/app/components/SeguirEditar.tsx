@@ -170,7 +170,7 @@ const SeguirEditar: React.FC<SeguirEditarProps> = ({
 
   const handlefollowClick = async () => {
     const apiUrl = `http://localhost:8080/1.0.0/followers/add`;
-
+    console.log("User:", userID, "Artisan: ", artisanID);
     const dataToSend = {
       follower_id: artisanID,
       following_id: userID,
@@ -223,7 +223,102 @@ const SeguirEditar: React.FC<SeguirEditarProps> = ({
                 >
                   ×
                 </button>
-                {/* ... [El resto de tu código JSX para editar el perfil aquí] */}
+                <div className="flex justify-center items-center mb-4">
+                  <img
+                    src={profileData.image}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full object-cover border-4 border-gray-300 mr-6 cursor-pointer"
+                  />
+                  <input type="file" className="hidden" />
+                </div>
+
+                {/* Contenedor de las dos columnas */}
+                <div className="flex space-x-4">
+                  {/* Primera columna */}
+                  <div className="w-1/2">
+                    <div>
+                      <label className="block mb-2">Nombre</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border rounded mb-4"
+                        value={profileData.name}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2">Username</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border rounded mb-4"
+                        value={profileData.username}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            username: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {/* Segunda columna */}
+                  <div className="w-1/2">
+                    <div>
+                      <label className="block mb-2">Apellidos</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border rounded mb-4"
+                        value={profileData.surnames}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            surname: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2">Teléfono</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border rounded mb-4"
+                        value={profileData.telephone}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block mb-2">Descripción</label>
+                  <textarea
+                    className="w-full p-2 border rounded mb-4"
+                    value={profileData.description}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                  ></textarea>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    className="bg-amber-900 text-white px-4 py-2 rounded"
+                    onClick={handleUpdate}
+                  >
+                    Guardar cambios
+                  </button>
+                </div>
               </div>
             </div>
           )}

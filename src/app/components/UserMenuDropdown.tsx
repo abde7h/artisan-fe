@@ -29,12 +29,25 @@ const UserMenuDropdown = () => {
         onClick={toggleMenu}
         className="focus:outline-none flex items-center relative"
       >
-        <img
-          src="http://localhost:8080/images/Aritsan_Web/Logo_Artisan.jpg"
-          style={{ width: 54, height: 60 }}
-          alt="Logo Artisan"
-        />
-
+        {(() => {
+          if (userLogged?.user.isArtisan) {
+            return (
+              <img
+                src={userLogged?.user.image}
+                className="w-10 h-10 rounded-full shadow-lg mb-2 object-cover" // Clases de Tailwind
+                alt="Foto perfil"
+              />
+            );
+          } else {
+            return (
+              <img
+                src="http://localhost:8080/images/Aritsan_Web/Logo_Artisan.jpg"
+                style={{ width: 54, height: 60 }} // CSS en línea
+                alt="Foto perfil"
+              />
+            );
+          }
+        })()}
         <MdArrowDropDownCircle className="w-5 h-5 absolute bottom-0 right-0" />
       </button>
 
